@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EDU-0007 | LiveMatch Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700;800;900&amp;family=Courier+Prime&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#ffd3cf",
+                        "on-tertiary": "#68000a",
+                        "tertiary-fixed": "#ffdad7",
+                        "surface-container-lowest": "#040e1f",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "primary-fixed": "#79ff5b",
+                        "secondary-container": "#ee9800",
+                        "inverse-primary": "#106e00",
+                        "on-primary-fixed": "#022100",
+                        "on-background": "#d8e3fb",
+                        "surface": "#081425",
+                        "surface-container": "#152031",
+                        "on-primary": "#053900",
+                        "on-secondary-fixed": "#2a1700",
+                        "secondary": "#ffb95f",
+                        "outline-variant": "#3c4b35",
+                        "on-secondary-container": "#5b3800",
+                        "on-tertiary-container": "#bd1e26",
+                        "primary-container": "#39ff14",
+                        "surface-container-high": "#1f2a3c",
+                        "inverse-on-surface": "#263143",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-tertiary-fixed-variant": "#930013",
+                        "background": "#081425",
+                        "on-surface": "#d8e3fb",
+                        "outline": "#85967c",
+                        "on-tertiary-fixed": "#410004",
+                        "surface-container-highest": "#2a3548",
+                        "secondary-fixed": "#ffddb8",
+                        "tertiary": "#fff8f7",
+                        "on-primary-fixed-variant": "#095300",
+                        "on-error": "#690005",
+                        "inverse-surface": "#d8e3fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "max-width": "1440px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Public Sans"],
+                        "body-md": ["Public Sans"],
+                        "display-lg": ["Public Sans"],
+                        "body-lg": ["Public Sans"],
+                        "label-sm": ["Public Sans"],
+                        "headline-lg": ["Public Sans"],
+                        "mono-data": ["Courier Prime"],
+                        "headline-lg-mobile": ["Public Sans"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "mono-data": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0B0F19;
+            color: #d8e3fb;
+            font-family: 'Public Sans', sans-serif;
+            overflow: hidden;
+        }
+        .operator-grid {
+            display: grid;
+            grid-template-columns: 1.618fr 1fr;
+            height: calc(100vh - 64px);
+        }
+        .incident-btn {
+            transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .incident-btn:active {
+            transform: translateY(1px);
+            filter: brightness(0.9);
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased">
+<!-- Top Navigation Bar (Shared Component Strategy) -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin-desktop h-16 z-50">
+<div class="flex items-center gap-6">
+<span class="font-headline-lg text-headline-lg font-black text-primary-container">LiveMatch Command</span>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full">
+<span class="w-2 h-2 bg-primary-container rounded-full pulse-dot"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Live Pulse: Active</span>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-container-high transition-colors px-2 h-full flex items-center" href="#">Dashboard</a>
+<a class="text-primary font-bold border-b-2 border-primary font-label-sm text-label-sm uppercase tracking-widest h-full flex items-center" href="#">Incidents</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-container-high transition-colors px-2 h-full flex items-center" href="#">Roster</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-container-high transition-colors px-2 h-full flex items-center" href="#">Analytics</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high p-2 rounded">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high p-2 rounded">settings</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-bold hover:brightness-90 transition-all active:scale-95">End Match</button>
+</div>
+</header>
+<div class="flex">
+<!-- Side Navigation Bar (Shared Component Strategy) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container border-r border-outline-variant flex flex-col z-40">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 bg-surface-container-high rounded flex items-center justify-center border border-outline">
+<span class="material-symbols-outlined text-primary">monitoring</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-primary leading-none">OPERATOR</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">EDU-0007 / POD-4</div>
+</div>
+</div>
+<nav class="space-y-1">
+<button class="w-full flex items-center gap-3 px-4 py-3 text-primary-container font-bold border-l-4 border-primary-container bg-surface-container-high transition-transform active:translate-x-1">
+<span class="material-symbols-outlined">emergency</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Live Log</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-transform active:translate-x-1">
+<span class="material-symbols-outlined">bolt</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Quick Actions</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-transform active:translate-x-1">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Roster Management</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-transform active:translate-x-1">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Substitution Board</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-transform active:translate-x-1">
+<span class="material-symbols-outlined">report_problem</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Incident Report</span>
+</button>
+</nav>
+</div>
+<div class="mt-auto p-6 space-y-4">
+<button class="w-full py-3 bg-error text-on-error font-bold tracking-widest uppercase border-2 border-black/20 hover:brightness-110 active:scale-95 transition-all">
+                    LOCKDOWN SESSION
+                </button>
+<div class="pt-4 border-t border-outline-variant flex flex-col gap-2">
+<button class="flex items-center gap-3 px-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span class="font-label-sm text-label-sm">Help</span>
+</button>
+<button class="flex items-center gap-3 px-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span class="font-label-sm text-label-sm">Logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="ml-64 w-full operator-grid overflow-hidden">
+<!-- Left Panel: Incident Registration -->
+<section class="bg-background p-margin-desktop overflow-y-auto scroll-hide">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary leading-tight">Match Control</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Immediate event registration. Click any tile to log an incident at the current match time.</p>
+</div>
+<div class="flex gap-4">
+<div class="px-6 py-3 bg-surface-container border border-outline-variant text-center min-w-[120px]">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Team A</div>
+<div class="font-headline-lg text-headline-lg text-white font-black">2</div>
+</div>
+<div class="px-6 py-3 bg-surface-container border border-outline-variant text-center min-w-[120px]">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Team B</div>
+<div class="font-headline-lg text-headline-lg text-white font-black">1</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-margin-desktop">
+<!-- Team A Grid -->
+<div class="space-y-gutter">
+<div class="flex items-center gap-2 mb-4">
+<span class="h-6 w-1 bg-primary-container"></span>
+<h2 class="font-title-md text-title-md text-primary-container uppercase tracking-wide">Team A Incidents</h2>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="incident-btn bg-surface-container border-l-4 border-primary-container h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-primary-container group-hover:scale-110 transition-transform">sports_soccer</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Goal</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-secondary h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">warning</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Foul</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-yellow-400 h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-yellow-400 group-hover:scale-110 transition-transform">rectangle</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Yellow Card</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-red-500 h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-red-500 group-hover:scale-110 transition-transform">rectangle</span>
+<span class="font-label-sm text-label-sm font-bold uppercase" style="font-variation-settings: 'FILL' 1;">Red Card</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-on-surface-variant h-24 flex flex-row items-center justify-center gap-3 hover:bg-surface-container-high col-span-1">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">change_circle</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Sub</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-on-surface-variant h-24 flex flex-row items-center justify-center gap-3 hover:bg-surface-container-high col-span-1">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">flag</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Offside</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-on-surface-variant h-24 flex items-center justify-center gap-3 hover:bg-surface-container-high col-span-2">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">stadium</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Corner Kick</span>
+</button>
+</div>
+</div>
+<!-- Team B Grid -->
+<div class="space-y-gutter">
+<div class="flex items-center gap-2 mb-4">
+<span class="h-6 w-1 bg-secondary"></span>
+<h2 class="font-title-md text-title-md text-secondary uppercase tracking-wide">Team B Incidents</h2>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="incident-btn bg-surface-container border-l-4 border-secondary h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">sports_soccer</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Goal</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-primary-container h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-primary-container group-hover:scale-110 transition-transform">warning</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Foul</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-yellow-400 h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-yellow-400 group-hover:scale-110 transition-transform">rectangle</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Yellow Card</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-red-500 h-32 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-high group">
+<span class="material-symbols-outlined text-4xl text-red-500 group-hover:scale-110 transition-transform">rectangle</span>
+<span class="font-label-sm text-label-sm font-bold uppercase" style="font-variation-settings: 'FILL' 1;">Red Card</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-on-surface-variant h-24 flex flex-row items-center justify-center gap-3 hover:bg-surface-container-high col-span-1">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">change_circle</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Sub</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-on-surface-variant h-24 flex flex-row items-center justify-center gap-3 hover:bg-surface-container-high col-span-1">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">flag</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Offside</span>
+</button>
+<button class="incident-btn bg-surface-container border-l-4 border-on-surface-variant h-24 flex items-center justify-center gap-3 hover:bg-surface-container-high col-span-2">
+<span class="material-symbols-outlined text-2xl text-on-surface-variant">stadium</span>
+<span class="font-label-sm text-label-sm font-bold uppercase">Corner Kick</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Manual Input / VAR Overlay Trigger -->
+<div class="mt-8 p-6 bg-surface-container border border-outline flex items-center justify-between">
+<div>
+<div class="font-title-md text-title-md text-white mb-1">Advanced Controls</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Trigger VAR review or add unlisted incidents</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 border border-secondary text-secondary font-bold uppercase tracking-widest hover:bg-secondary/10 transition-colors">VAR Review</button>
+<button class="px-6 py-3 border border-on-surface-variant text-on-surface-variant font-bold uppercase tracking-widest hover:bg-white/5 transition-colors">Custom Incident</button>
+</div>
+</div>
+</section>
+<!-- Right Panel: Chronometer & Feed -->
+<section class="bg-surface-container border-l border-outline-variant flex flex-col h-full">
+<!-- Chronometer Section -->
+<div class="p-margin-desktop border-b border-outline-variant bg-surface-container-low">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-tighter">Live Chronometer</span>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-primary-container text-on-primary-container font-black text-xs uppercase tracking-widest">1st Half</span>
+</div>
+</div>
+<div class="text-[120px] font-black leading-none text-primary-container text-center py-4 neon-glow" id="master-clock" style="font-family: 'Public Sans', sans-serif;">
+                        34:12
+                    </div>
+<div class="grid grid-cols-3 gap-2 mt-6">
+<button class="flex flex-col items-center justify-center p-4 bg-primary-container text-on-primary-container group">
+<span class="material-symbols-outlined text-3xl">play_arrow</span>
+<span class="font-label-sm text-label-sm font-bold uppercase mt-1">Play</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-highest text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">pause</span>
+<span class="font-label-sm text-label-sm font-bold uppercase mt-1">Pause</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-highest text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">history</span>
+<span class="font-label-sm text-label-sm font-bold uppercase mt-1">VAR Stop</span>
+</button>
+</div>
+</div>
+<!-- Feed Section -->
+<div class="flex-1 flex flex-col overflow-hidden">
+<div class="px-margin-desktop py-4 bg-surface-container-high border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-label-sm text-label-sm text-on-surface font-bold uppercase tracking-widest">Live Event Log</h3>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">filter_list</span>
+</div>
+<div class="flex-1 overflow-y-auto scroll-hide p-4 space-y-2">
+<!-- Log Item 1 -->
+<div class="p-3 bg-background border-l-4 border-primary-container flex items-center gap-4 transition-all hover:bg-surface">
+<div class="font-mono-data text-mono-data text-primary-container">32:05</div>
+<div class="flex-1">
+<div class="font-label-sm text-label-sm text-white font-bold uppercase">Goal - Team A</div>
+<div class="font-body-md text-body-md text-on-surface-variant">#9 Marcus Miller (Assist: #14)</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:text-white">edit</button>
+</div>
+<!-- Log Item 2 -->
+<div class="p-3 bg-background border-l-4 border-yellow-400 flex items-center gap-4 transition-all hover:bg-surface">
+<div class="font-mono-data text-mono-data text-yellow-400">28:44</div>
+<div class="flex-1">
+<div class="font-label-sm text-label-sm text-white font-bold uppercase">Yellow Card - Team B</div>
+<div class="font-body-md text-body-md text-on-surface-variant">#5 Sergio Ramos (Tactical Foul)</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:text-white">edit</button>
+</div>
+<!-- Log Item 3 -->
+<div class="p-3 bg-background border-l-4 border-on-surface-variant flex items-center gap-4 transition-all hover:bg-surface opacity-70">
+<div class="font-mono-data text-mono-data text-on-surface-variant">21:10</div>
+<div class="flex-1">
+<div class="font-label-sm text-label-sm text-white font-bold uppercase">Corner - Team A</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Crossed into box, cleared by defense</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:text-white">edit</button>
+</div>
+<!-- Log Item 4 -->
+<div class="p-3 bg-background border-l-4 border-secondary flex items-center gap-4 transition-all hover:bg-surface">
+<div class="font-mono-data text-mono-data text-secondary">18:02</div>
+<div class="flex-1">
+<div class="font-label-sm text-label-sm text-white font-bold uppercase">Goal - Team B</div>
+<div class="font-body-md text-body-md text-on-surface-variant">#10 Leo Vane (Penalty)</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:text-white">edit</button>
+</div>
+<!-- Log Item 5 -->
+<div class="p-3 bg-background border-l-4 border-primary-container flex items-center gap-4 transition-all hover:bg-surface">
+<div class="font-mono-data text-mono-data text-primary-container">12:30</div>
+<div class="flex-1">
+<div class="font-label-sm text-label-sm text-white font-bold uppercase">Goal - Team A</div>
+<div class="font-body-md text-body-md text-on-surface-variant">#22 Jonas Hoff (Long range)</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant text-sm hover:text-white">edit</button>
+</div>
+</div>
+<!-- Feed Footer -->
+<div class="p-6 bg-surface-container-low border-t border-outline-variant">
+<div class="flex justify-between items-center mb-4">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Current Weather</div>
+<div class="font-body-md text-body-md text-white">18°C, Light Wind</div>
+</div>
+<div class="flex justify-between items-center">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Estimated Added Time</div>
+<div class="font-body-md text-body-md text-primary-container font-bold">+03:00</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<script>
+        // Micro-interaction: Incident Button Press Log
+        document.querySelectorAll('.incident-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.querySelector('span:last-child').innerText;
+                const team = btn.closest('.space-y-gutter').querySelector('h2').innerText.split(' ')[1];
+                console.log(`Incident Logged: ${type} for Team ${team}`);
+                
+                // Visual feedback
+                const ripple = document.createElement('div');
+                ripple.className = 'absolute inset-0 bg-white/10 pointer-events-none opacity-0 transition-opacity duration-300';
+                btn.style.position = 'relative';
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.classList.add('opacity-100'), 0);
+                setTimeout(() => {
+                    ripple.classList.remove('opacity-100');
+                    setTimeout(() => ripple.remove(), 300);
+                }, 150);
+            });
+        });
+
+        // Simple Timer Logic
+        let seconds = 34 * 60 + 12;
+        const clockEl = document.getElementById('master-clock');
+        
+        setInterval(() => {
+            seconds++;
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            clockEl.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+    </script>
+</body></html>

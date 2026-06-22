@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EDU-0002 Gestión - Escenarios Deportivos</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#343439",
+                        "error-container": "#93000a",
+                        "surface-tint": "#b5c5fa",
+                        "primary-fixed": "#dae1ff",
+                        "tertiary-fixed": "#ffdcc2",
+                        "surface-container": "#1f1f23",
+                        "secondary-fixed": "#dde1fa",
+                        "outline-variant": "#45464f",
+                        "surface-container-highest": "#343439",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#b5c5fa",
+                        "primary-container": "#7f8fc1",
+                        "on-surface": "#e4e1e7",
+                        "on-secondary-container": "#b6bbd2",
+                        "secondary": "#c1c5dd",
+                        "inverse-surface": "#e4e1e7",
+                        "background": "#131317",
+                        "secondary-container": "#464b5e",
+                        "surface-bright": "#39393d",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e4e1e7",
+                        "on-tertiary-container": "#432100",
+                        "secondary-fixed-dim": "#c1c5dd",
+                        "primary": "#b5c5fa",
+                        "surface-dim": "#131317",
+                        "on-primary": "#1d2e5a",
+                        "on-secondary": "#2b3042",
+                        "surface-container-lowest": "#0e0e12",
+                        "inverse-primary": "#4d5d8b",
+                        "on-primary-container": "#162853",
+                        "surface-container-low": "#1b1b1f",
+                        "outline": "#8f909a",
+                        "on-tertiary-fixed-variant": "#663d16",
+                        "surface": "#131317",
+                        "on-primary-fixed": "#051944",
+                        "surface-container-high": "#2a2a2e",
+                        "on-secondary-fixed": "#161b2c",
+                        "on-primary-fixed-variant": "#354572",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#414659",
+                        "tertiary-fixed-dim": "#f7ba89",
+                        "tertiary-container": "#bb8558",
+                        "tertiary": "#f7ba89",
+                        "on-tertiary": "#4b2702",
+                        "on-tertiary-fixed": "#2e1500",
+                        "on-surface-variant": "#c5c6d0",
+                        "inverse-on-surface": "#303034"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "display": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #131317;
+            color: #e4e1e7;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+            font-size: 20px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1f1f23;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #45464f;
+            border-radius: 10px;
+        }
+
+        .golden-grid {
+            display: grid;
+            grid-template-columns: 61.8% 38.2%;
+            gap: 16px;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 120px repeat(14, 1fr);
+        }
+
+        .time-block {
+            border-left: 1px solid #45464f;
+            min-height: 64px;
+        }
+
+        .reservation-block {
+            position: absolute;
+            height: calc(100% - 8px);
+            top: 4px;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 11px;
+            overflow: hidden;
+            border-left: 4px solid;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .reservation-block:hover {
+            transform: scale(1.02);
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body class="flex overflow-hidden h-screen bg-background text-on-background">
+    <!-- SideNavBar Component -->
+    <aside
+        class="fixed left-0 top-0 h-full w-[260px] bg-surface-container border-r border-outline-variant flex flex-col py-8 z-50">
+        <div class="px-6 mb-10">
+            <h1 class="font-headline-lg text-2xl font-black text-on-surface leading-tight tracking-tight uppercase">
+                Admin Console</h1>
+            <p class="text-xs font-semibold text-primary opacity-70 tracking-widest uppercase mt-1">Institutional
+                Control</p>
+        </div>
+        <nav class="flex-grow flex flex-col gap-1 px-3">
+            <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all"
+                href="#">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-label-md text-sm font-semibold">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary-container text-on-primary-container border-l-4 border-primary transition-all"
+                href="#">
+                <span class="material-symbols-outlined">sports_basketball</span>
+                <span class="font-label-md text-sm font-semibold">Organizations</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all"
+                href="#">
+                <span class="material-symbols-outlined">groups</span>
+                <span class="font-label-md text-sm font-semibold">Teams</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all"
+                href="#">
+                <span class="material-symbols-outlined">security</span>
+                <span class="font-label-md text-sm font-semibold">Integrity Reports</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all"
+                href="#">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <span class="font-label-md text-sm font-semibold">Audit Log</span>
+            </a>
+        </nav>
+        <div class="px-3 mt-auto flex flex-col gap-1">
+            <button
+                class="mb-6 mx-3 py-3 bg-primary text-on-primary rounded font-bold text-sm hover:opacity-90 transition-opacity active:scale-95">
+                Generate Report
+            </button>
+            <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all"
+                href="#">
+                <span class="material-symbols-outlined">contact_support</span>
+                <span class="font-label-md text-sm font-semibold">Support</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all"
+                href="#">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-label-md text-sm font-semibold">Sign Out</span>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content Canvas -->
+    <main class="ml-[260px] flex-grow flex flex-col h-full overflow-hidden">
+        <!-- TopNavBar Component -->
+        <header
+            class="w-full h-16 bg-surface-container border-b border-outline-variant flex justify-between items-center px-6">
+            <div class="flex items-center gap-4">
+                <span class="font-headline-md text-xl font-bold text-primary tracking-tight">EDU-0002 Gestión</span>
+                <div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+                <div class="relative group">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                    <input
+                        class="bg-surface-container-high border-none rounded px-10 py-1.5 text-sm w-64 focus:ring-1 focus:ring-primary placeholder:text-outline"
+                        placeholder="Buscar escenarios..." type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+                    <button
+                        class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">help</button>
+                </div>
+                <div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-on-surface">Admin User</p>
+                        <p class="text-[10px] text-outline uppercase tracking-wider">Super Administrator</p>
+                    </div>
+                    <img alt="Administrator Avatar" class="w-8 h-8 rounded-full bg-surface-container-highest"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9o3xssILP1jk2qfumHPzk1-n2zQuu0_gNbT6lkMY6-g8IGamx3892bu8ZDbE6frtAp0DPCkOqpOqyXKcPjQ-IFo-psDKNRWz3STPDtH62bKz8ExwpIpgQ8J2z3MKtkCy0aGmrWQFXFcvYbNg01HYDVQ_05LsqFMs9OOA6bluksju75vPM5WWvemzUwaVlbH2OUoB_qGYB7s24nXECqq6Qdqd1aivbiS-Svk1SrRcwRZbtdDP09-K4qbSy7Hcnl6zKEU8OTh51SAps" />
+                </div>
+            </div>
+        </header>
+        <!-- Dashboard Body -->
+        <div class="flex-grow p-6 overflow-y-auto custom-scrollbar">
+            <div class="max-w-[1600px] mx-auto">
+                <!-- Page Header -->
+                <div class="mb-8 flex justify-between items-end">
+                    <div>
+                        <h2 class="text-3xl font-headline font-bold text-on-surface tracking-tight">Gestión de
+                            Escenarios Deportivos</h2>
+                        <p class="text-on-surface-variant mt-1">Control de disponibilidad y registros de infraestructura
+                            institucional.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 bg-surface-container-high text-on-surface rounded border border-outline-variant hover:bg-surface-container-highest transition-colors font-medium text-sm">
+                            <span class="material-symbols-outlined">filter_list</span> Filtrar Vista
+                        </button>
+                        <button
+                            class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded hover:opacity-90 transition-opacity font-bold text-sm">
+                            <span class="material-symbols-outlined">add</span> Nuevo Escenario
+                        </button>
+                    </div>
+                </div>
+                <!-- Golden Ratio Layout -->
+                <div class="golden-grid">
+                    <!-- LEFT COLUMN (61.8%): Dinamic Schedule Matrix -->
+                    <section
+                        class="bg-surface-container-low border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-2xl">
+                        <div
+                            class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container">
+                            <div class="flex items-center gap-4">
+                                <span class="material-symbols-outlined text-primary">calendar_month</span>
+                                <h3 class="font-bold text-sm uppercase tracking-wider">Cronograma Maestro - Hoy</h3>
+                            </div>
+                            <div class="flex items-center bg-surface-container-highest rounded-lg p-1">
+                                <button
+                                    class="px-3 py-1 text-xs font-bold rounded bg-surface-container text-primary">Día</button>
+                                <button
+                                    class="px-3 py-1 text-xs font-medium rounded text-on-surface-variant hover:text-on-surface">Semana</button>
+                                <button
+                                    class="px-3 py-1 text-xs font-medium rounded text-on-surface-variant hover:text-on-surface">Mes</button>
+                            </div>
+                        </div>
+                        <div class="flex-grow overflow-x-auto custom-scrollbar">
+                            <div class="min-w-[1000px]">
+                                <!-- Schedule Header (Hours) -->
+                                <div
+                                    class="schedule-grid border-b border-outline-variant bg-surface-container-lowest/50">
+                                    <div
+                                        class="p-3 text-[10px] font-black text-outline uppercase border-r border-outline-variant">
+                                        Espacio / Hora</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        07:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        08:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        09:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        10:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        11:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        12:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        13:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        14:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        15:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        16:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        17:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        18:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center border-r border-outline-variant">
+                                        19:00</div>
+                                    <div class="p-3 text-[10px] font-bold text-center">20:00</div>
+                                </div>
+                                <!-- Schedule Rows -->
+                                <!-- Row 1: Cancha de Futbol -->
+                                <div
+                                    class="schedule-grid border-b border-outline-variant group hover:bg-surface-container-high transition-colors">
+                                    <div class="p-4 border-r border-outline-variant flex flex-col justify-center">
+                                        <span class="text-xs font-bold text-on-surface">Cancha Fútbol A</span>
+                                        <span class="text-[9px] text-outline uppercase">Sintético Prof.</span>
+                                    </div>
+                                    <div class="relative col-span-14 h-16 flex">
+                                        <!-- Time Dividers -->
+                                        <div class="w-full flex">
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 h-full"></div>
+                                        </div>
+                                        <!-- Blocks -->
+                                        <div
+                                            class="reservation-block bg-primary-container/20 border-primary text-primary-fixed left-[7.14%] w-[14.28%]">
+                                            <p class="font-bold">Clase Técnica I</p>
+                                            <p class="text-[9px] opacity-80">Prof. Méndez</p>
+                                        </div>
+                                        <div
+                                            class="reservation-block bg-tertiary-container/20 border-tertiary text-tertiary-fixed left-[35.7%] w-[21.42%]">
+                                            <p class="font-bold">Entrenamiento Selección</p>
+                                            <p class="text-[9px] opacity-80">Categoría Sub-20</p>
+                                        </div>
+                                        <div
+                                            class="reservation-block bg-error-container/20 border-error text-error left-[57.12%] w-[7.14%]">
+                                            <p class="font-bold">Mantenimiento</p>
+                                            <p class="text-[9px] opacity-80">Podado Césped</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row 2: Piscina Olimpica -->
+                                <div
+                                    class="schedule-grid border-b border-outline-variant group hover:bg-surface-container-high transition-colors">
+                                    <div class="p-4 border-r border-outline-variant flex flex-col justify-center">
+                                        <span class="text-xs font-bold text-on-surface">Piscina Olímpica</span>
+                                        <span class="text-[9px] text-outline uppercase">Climatizada</span>
+                                    </div>
+                                    <div class="relative col-span-14 h-16 flex">
+                                        <div class="w-full flex opacity-30">
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 h-full"></div>
+                                        </div>
+                                        <div
+                                            class="reservation-block bg-primary-container/20 border-primary text-primary-fixed left-[0%] w-[14.28%]">
+                                            <p class="font-bold">Nado Libre</p>
+                                            <p class="text-[9px] opacity-80">Comunidad EDU</p>
+                                        </div>
+                                        <div
+                                            class="reservation-block bg-primary-container/20 border-primary text-primary-fixed left-[21.42%] w-[14.28%]">
+                                            <p class="font-bold">Nado Libre</p>
+                                            <p class="text-[9px] opacity-80">Comunidad EDU</p>
+                                        </div>
+                                        <div
+                                            class="reservation-block bg-tertiary-container/20 border-tertiary text-tertiary-fixed left-[71.4%] w-[21.42%]">
+                                            <p class="font-bold">Competencia Regional</p>
+                                            <p class="text-[9px] opacity-80">Final Juvenil</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row 3: Losa Multideportiva -->
+                                <div
+                                    class="schedule-grid border-b border-outline-variant group hover:bg-surface-container-high transition-colors">
+                                    <div class="p-4 border-r border-outline-variant flex flex-col justify-center">
+                                        <span class="text-xs font-bold text-on-surface">Losa 01 (Voley)</span>
+                                        <span class="text-[9px] text-outline uppercase">Cubierta</span>
+                                    </div>
+                                    <div class="relative col-span-14 h-16 flex">
+                                        <div class="w-full flex opacity-30">
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 h-full"></div>
+                                        </div>
+                                        <div
+                                            class="reservation-block bg-primary-container/20 border-primary text-primary-fixed left-[14.28%] w-[28.56%]">
+                                            <p class="font-bold">Torneo Interfacultades</p>
+                                            <p class="text-[9px] opacity-80">Fase Clasificatoria</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row 4: Gimnasio B -->
+                                <div
+                                    class="schedule-grid border-b border-outline-variant group hover:bg-surface-container-high transition-colors">
+                                    <div class="p-4 border-r border-outline-variant flex flex-col justify-center">
+                                        <span class="text-xs font-bold text-on-surface">Gimnasio B</span>
+                                        <span class="text-[9px] text-outline uppercase">Pesas / Cardio</span>
+                                    </div>
+                                    <div class="relative col-span-14 h-16 flex">
+                                        <div class="w-full flex opacity-30">
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+                                            <div class="flex-1 h-full"></div>
+                                        </div>
+                                        <div
+                                            class="reservation-block bg-primary-container/20 border-primary text-primary-fixed left-[0%] w-[100%]">
+                                            <p class="font-bold">Uso Libre General</p>
+                                            <p class="text-[9px] opacity-80">Acceso restringido por aforo (85%)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="p-4 bg-surface-container border-t border-outline-variant flex justify-between items-center">
+                            <div class="flex gap-4 text-[10px] uppercase font-bold text-outline">
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-2.5 h-2.5 rounded-sm bg-primary"></div> Académico
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-2.5 h-2.5 rounded-sm bg-tertiary"></div> Eventos
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-2.5 h-2.5 rounded-sm bg-error"></div> Alerta/Mantenimiento
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-outline italic">Última actualización: 10:45 AM</p>
+                        </div>
+                    </section>
+                    <!-- RIGHT COLUMN (38.2%): Panel de Registro y Alertas -->
+                    <aside class="flex flex-col gap-4">
+                        <!-- Alert Section -->
+                        <div class="flex flex-col gap-3">
+                            <div
+                                class="bg-error-container/30 border-l-4 border-error p-4 rounded-lg flex gap-4 items-start shadow-lg">
+                                <span class="material-symbols-outlined text-error mt-0.5"
+                                    style="font-variation-settings: 'FILL' 1;">warning</span>
+                                <div>
+                                    <h4 class="font-bold text-sm text-error-container">Conflicto detectado: Losa 02</h4>
+                                    <p class="text-xs text-on-error-container mt-1">Superposición horaria entre
+                                        "Práctica de Karate" y "Limpieza Programada" (14:30 - 15:30).</p>
+                                    <div class="mt-2 flex gap-2">
+                                        <button
+                                            class="px-3 py-1 bg-error text-on-error text-[10px] font-black uppercase rounded hover:opacity-90">Corregir
+                                            Ahora</button>
+                                        <button
+                                            class="px-3 py-1 bg-surface-container text-[10px] font-bold text-on-surface uppercase rounded border border-outline-variant">Omitir</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="bg-tertiary-container/20 border-l-4 border-tertiary p-4 rounded-lg flex gap-4 items-start shadow-md">
+                                <span class="material-symbols-outlined text-tertiary mt-0.5"
+                                    style="font-variation-settings: 'FILL' 1;">info</span>
+                                <div>
+                                    <h4 class="font-bold text-sm text-tertiary">Mantenimiento Preventivo</h4>
+                                    <p class="text-xs text-on-surface-variant mt-1">La iluminación de la Cancha Fútbol B
+                                        requiere revisión técnica (Planificado para el 25/10).</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Registration Form Card -->
+                        <div
+                            class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden shadow-xl">
+                            <div
+                                class="p-4 border-b border-outline-variant bg-surface-container-high flex items-center justify-between">
+                                <h3 class="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">add_location_alt</span>
+                                    Registro de Escenario
+                                </h3>
+                                <span
+                                    class="text-[10px] bg-primary-container text-on-primary-container px-2 py-0.5 rounded font-black">NUEVO</span>
+                            </div>
+                            <form class="p-6 flex flex-col gap-5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] font-black text-outline uppercase tracking-widest">Nombre
+                                        del Escenario</label>
+                                    <input
+                                        class="bg-surface-container-lowest border border-outline-variant rounded p-2.5 text-sm focus:ring-1 focus:ring-primary outline-none transition-all"
+                                        placeholder="Ej: Piscina Temperada Sub-suelo" type="text" />
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label
+                                            class="text-[10px] font-black text-outline uppercase tracking-widest">Tipo
+                                            de Instalación</label>
+                                        <select
+                                            class="bg-surface-container-lowest border border-outline-variant rounded p-2.5 text-sm focus:ring-1 focus:ring-primary outline-none appearance-none">
+                                            <option>Cancha Sintética</option>
+                                            <option>Piscina</option>
+                                            <option>Losa Cubierta</option>
+                                            <option>Gimnasio</option>
+                                            <option>Pista Atlética</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-col gap-1.5">
+                                        <label
+                                            class="text-[10px] font-black text-outline uppercase tracking-widest">Aforo
+                                            Máximo</label>
+                                        <input
+                                            class="bg-surface-container-lowest border border-outline-variant rounded p-2.5 text-sm focus:ring-1 focus:ring-primary outline-none"
+                                            placeholder="0" type="number" />
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label
+                                        class="text-[10px] font-black text-outline uppercase tracking-widest">Equipamiento
+                                        Disponible</label>
+                                    <div class="grid grid-cols-2 gap-2 mt-1">
+                                        <label
+                                            class="flex items-center gap-2 text-xs text-on-surface-variant cursor-pointer">
+                                            <input
+                                                class="rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-0"
+                                                type="checkbox" /> Iluminación LED
+                                        </label>
+                                        <label
+                                            class="flex items-center gap-2 text-xs text-on-surface-variant cursor-pointer">
+                                            <input
+                                                class="rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-0"
+                                                type="checkbox" /> Marcador Digital
+                                        </label>
+                                        <label
+                                            class="flex items-center gap-2 text-xs text-on-surface-variant cursor-pointer">
+                                            <input
+                                                class="rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-0"
+                                                type="checkbox" /> Tribuna
+                                        </label>
+                                        <label
+                                            class="flex items-center gap-2 text-xs text-on-surface-variant cursor-pointer">
+                                            <input
+                                                class="rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-0"
+                                                type="checkbox" /> Sonido Profesional
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="pt-4 border-t border-outline-variant mt-2">
+                                    <button
+                                        class="w-full py-3 bg-primary text-on-primary font-black uppercase text-xs tracking-[0.2em] rounded shadow-lg shadow-primary/10 hover:opacity-90 active:scale-95 transition-all"
+                                        type="submit">
+                                        Dar de Alta Escenario
+                                    </button>
+                                    <p class="text-[10px] text-center text-outline mt-4 leading-relaxed">
+                                        Al registrar, el escenario aparecerá automáticamente en la matriz de horarios
+                                        disponible para reservación institucional.
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </aside>
+                </div>
+                <!-- Footer Summary Grid -->
+                <div class="grid grid-cols-4 gap-4 mt-8">
+                    <div
+                        class="bg-surface-container border border-outline-variant p-5 rounded-lg flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-lg bg-primary-container/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary-fixed"
+                                style="font-size: 28px;">stadium</span>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-outline uppercase tracking-widest">Total Escenarios
+                            </p>
+                            <h5 class="text-2xl font-bold text-on-surface">24</h5>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-surface-container border border-outline-variant p-5 rounded-lg flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-lg bg-tertiary-container/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-tertiary-fixed"
+                                style="font-size: 28px;">event_available</span>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-outline uppercase tracking-widest">Reservas Hoy</p>
+                            <h5 class="text-2xl font-bold text-on-surface">112</h5>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-surface-container border border-outline-variant p-5 rounded-lg flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-lg bg-error-container/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-error"
+                                style="font-size: 28px;">build_circle</span>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-outline uppercase tracking-widest">En Mantenimiento
+                            </p>
+                            <h5 class="text-2xl font-bold text-on-surface">3</h5>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-surface-container border border-outline-variant p-5 rounded-lg flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-lg bg-secondary-container/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-secondary-fixed"
+                                style="font-size: 28px;">query_stats</span>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-outline uppercase tracking-widest">Ocupación Prom.</p>
+                            <h5 class="text-2xl font-bold text-on-surface">78.4%</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Micro-interactions and interactions for dynamic elements
+        document.querySelectorAll('.reservation-block').forEach(block => {
+            block.addEventListener('click', () => {
+                const title = block.querySelector('p.font-bold').innerText;
+                alert(`Detalles de Reserva: ${title}\nHorario y recursos asignados.`);
+            });
+        });
+
+        // Search highlight mock
+        const searchInput = document.querySelector('input[placeholder="Buscar escenarios..."]');
+        searchInput.addEventListener('input', (e) => {
+            console.log('Filtrando matriz para:', e.target.value);
+            // Dynamic filtering logic would go here
+        });
+    </script>
+</body>
+
+</html>

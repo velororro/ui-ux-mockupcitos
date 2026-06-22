@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EDU-0006 - Gestión de Calendario y Programación</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#051944",
+                        "surface-container-lowest": "#0e0e12",
+                        "on-tertiary-fixed-variant": "#663d16",
+                        "on-tertiary-container": "#432100",
+                        "on-primary": "#1d2e5a",
+                        "inverse-on-surface": "#303034",
+                        "inverse-surface": "#e4e1e7",
+                        "tertiary-container": "#bb8558",
+                        "on-secondary-fixed-variant": "#414659",
+                        "background": "#131317",
+                        "on-primary-container": "#162853",
+                        "tertiary-fixed": "#ffdcc2",
+                        "secondary-fixed-dim": "#c1c5dd",
+                        "on-tertiary-fixed": "#2e1500",
+                        "on-tertiary": "#4b2702",
+                        "on-surface-variant": "#c5c6d0",
+                        "tertiary-fixed-dim": "#f7ba89",
+                        "tertiary": "#f7ba89",
+                        "surface-variant": "#343439",
+                        "on-secondary-fixed": "#161b2c",
+                        "surface-container-highest": "#343439",
+                        "surface-container": "#1f1f23",
+                        "primary-container": "#7f8fc1",
+                        "primary": "#b5c5fa",
+                        "on-surface": "#e4e1e7",
+                        "inverse-primary": "#4d5d8b",
+                        "surface-dim": "#131317",
+                        "on-secondary": "#2b3042",
+                        "surface-bright": "#39393d",
+                        "on-secondary-container": "#b6bbd2",
+                        "on-primary-fixed-variant": "#354572",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#dae1ff",
+                        "surface-container-high": "#2a2a2e",
+                        "secondary-fixed": "#dde1fa",
+                        "outline-variant": "#45464f",
+                        "surface-tint": "#b5c5fa",
+                        "surface": "#131317",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "on-background": "#e4e1e7",
+                        "secondary-container": "#464b5e",
+                        "outline": "#8f909a",
+                        "primary-fixed-dim": "#b5c5fa",
+                        "surface-container-low": "#1b1b1f",
+                        "secondary": "#c1c5dd",
+                        "brand-guinda": "#650A1B"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "display": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+        }
+
+        .data-mono {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.01em;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #131317;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #45464f;
+            border-radius: 10px;
+        }
+
+        .glass-panel {
+            background: rgba(26, 26, 30, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        details>summary {
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+    <!-- SideNavBar (38.2% equivalent width for Sidebar container in Golden Ratio context, here fixed at 380px for visual balance) -->
+    <aside
+        class="w-[380px] h-screen fixed left-0 top-0 bg-surface-container border-r border-outline-variant flex flex-col py-6 z-50">
+        <div class="px-8 mb-10">
+            <h1 class="font-display text-headline-md font-bold text-primary">EDU-0006</h1>
+            <p class="font-body text-body-md font-normal text-on-surface-variant">Gestión Administrativa</p>
+        </div>
+        <nav class="flex-1 px-4 space-y-2">
+            <details class="group">
+                <summary
+                    class="text-on-surface-variant transition-all duration-200 cursor-pointer flex items-center justify-between px-4 py-3 rounded hover:bg-surface-container-high active:scale-95">
+                    <div class="flex items-center">
+                        <span class="material-symbols-outlined mr-3">dashboard</span>
+                        <span class="font-body text-body-md">Dashboard</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-sm group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pl-12 pr-4 py-2 space-y-1 text-sm text-on-surface-variant">
+                    <div class="py-2 hover:text-primary cursor-pointer">Vista General</div>
+                    <div class="py-2 hover:text-primary cursor-pointer">Reportes Diarios</div>
+                </div>
+            </details>
+            <details class="group" open="">
+                <summary
+                    class="text-primary font-bold border-l-4 border-brand-guinda bg-primary-container/10 flex items-center justify-between px-4 py-3 rounded-r transition-all duration-200 cursor-pointer active:scale-95">
+                    <div class="flex items-center">
+                        <span class="material-symbols-outlined mr-3">calendar_month</span>
+                        <span class="font-body text-body-md">Calendario</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-sm group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pl-12 pr-4 py-2 space-y-1 text-sm text-on-surface-variant">
+                    <div class="py-2 text-primary font-semibold cursor-pointer">Mapa del Fixture</div>
+                    <div class="py-2 hover:text-primary cursor-pointer">Disponibilidad de Sedes</div>
+                </div>
+            </details>
+            <details class="group">
+                <summary
+                    class="text-on-surface-variant transition-all duration-200 cursor-pointer flex items-center justify-between px-4 py-3 rounded hover:bg-surface-container-high active:scale-95">
+                    <div class="flex items-center">
+                        <span class="material-symbols-outlined mr-3">event_note</span>
+                        <span class="font-body text-body-md">Programación</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-sm group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pl-12 pr-4 py-2 space-y-1 text-sm text-on-surface-variant">
+                    <div class="py-2 hover:text-primary cursor-pointer">Asignación Manual</div>
+                    <div class="py-2 hover:text-primary cursor-pointer">Conflictos</div>
+                </div>
+            </details>
+            <details class="group">
+                <summary
+                    class="text-on-surface-variant transition-all duration-200 cursor-pointer flex items-center justify-between px-4 py-3 rounded hover:bg-surface-container-high active:scale-95">
+                    <div class="flex items-center">
+                        <span class="material-symbols-outlined mr-3">analytics</span>
+                        <span class="font-body text-body-md">Estadísticas</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-sm group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pl-12 pr-4 py-2 space-y-1 text-sm text-on-surface-variant">
+                    <div class="py-2 hover:text-primary cursor-pointer">Rendimiento Académico</div>
+                    <div class="py-2 hover:text-primary cursor-pointer">Análisis de Asistencia</div>
+                </div>
+            </details>
+            <details class="group">
+                <summary
+                    class="text-on-surface-variant transition-all duration-200 cursor-pointer flex items-center justify-between px-4 py-3 rounded hover:bg-surface-container-high active:scale-95">
+                    <div class="flex items-center">
+                        <span class="material-symbols-outlined mr-3">person</span>
+                        <span class="font-body text-body-md">Perfil</span>
+                    </div>
+                    <span
+                        class="material-symbols-outlined text-sm group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div class="pl-12 pr-4 py-2 space-y-1 text-sm text-on-surface-variant">
+                    <div class="py-2 hover:text-primary cursor-pointer">Mis Datos</div>
+                    <div class="py-2 hover:text-primary cursor-pointer">Preferencias</div>
+                </div>
+            </details>
+        </nav>
+        <div class="px-4 mb-6">
+            <button
+                class="w-full py-3 px-4 bg-brand-guinda text-white font-bold rounded-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-brand-guinda/20">
+                <span class="material-symbols-outlined">auto_awesome</span>
+                Generar Fixture
+            </button>
+        </div>
+        <div class="px-4 border-t border-outline-variant pt-6 mt-auto">
+            <div
+                class="text-on-surface-variant transition-all duration-200 cursor-pointer flex items-center px-4 py-3 hover:text-primary">
+                <span class="material-symbols-outlined mr-3">help</span>
+                <span class="font-body text-body-md">Ayuda</span>
+            </div>
+            <div
+                class="text-on-surface-variant transition-all duration-200 cursor-pointer flex items-center px-4 py-3 hover:text-error">
+                <span class="material-symbols-outlined mr-3">logout</span>
+                <span class="font-body text-body-md">Cerrar Sesión</span>
+            </div>
+        </div>
+    </aside>
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 right-0 w-[calc(100%-380px)] h-16 bg-background border-b border-outline-variant flex justify-between items-center px-8 z-40">
+        <div class="flex items-center flex-1 max-w-xl">
+            <div class="relative w-full">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                <input
+                    class="bg-surface-container-low border border-outline-variant rounded-full pl-10 pr-4 py-2 w-full text-body-md focus:ring-2 focus:ring-brand-guinda focus:outline-none transition-all"
+                    placeholder="Buscar encuentros, equipos o sedes..." type="text" />
+            </div>
+        </div>
+        <div class="flex items-center space-x-8">
+            <nav class="flex space-x-6 text-on-surface-variant">
+                <button class="font-headline text-body-md transition-all hover:text-primary">Hoy</button>
+                <button class="font-headline text-body-md transition-all hover:text-primary">Semana</button>
+                <button class="font-headline text-body-md text-primary border-b-2 border-brand-guinda pb-1">Mes</button>
+            </nav>
+            <div class="flex items-center space-x-4 border-l border-outline-variant pl-8">
+                <button
+                    class="material-symbols-outlined text-on-surface-variant hover:text-brand-guinda transition-all">notifications</button>
+                <div class="flex items-center gap-3">
+                    <span class="text-label-md font-bold text-on-surface">ADMIN-EDU</span>
+                    <button class="material-symbols-outlined text-brand-guinda text-3xl">account_circle</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main Canvas (61.8% dynamic width layout) -->
+    <main class="ml-[380px] pt-16 min-h-screen bg-background">
+        <div class="flex flex-col lg:flex-row h-[calc(100vh-64px)] overflow-hidden">
+            <!-- Left Panel: Fixture Map (61.8% relative width) -->
+            <section class="w-full lg:w-[61.8%] p-8 overflow-y-auto border-r border-outline-variant bg-[#111111]">
+                <div class="flex flex-col gap-6 mb-8">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-brand-guinda font-bold tracking-widest text-label-md uppercase">Calendario
+                                Académico 2024</span>
+                            <h2 class="font-headline text-headline-xl font-bold text-on-surface mt-1">Mapa del Fixture
+                            </h2>
+                        </div>
+                        <div class="flex gap-2">
+                            <button
+                                class="bg-surface-container-high px-4 py-2 rounded text-label-md font-bold flex items-center gap-2 hover:bg-brand-guinda/10 hover:text-brand-guinda transition-all">
+                                <span class="material-symbols-outlined text-[18px]">filter_list</span> Filtrar
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Controls: Discipline and Format -->
+                    <div
+                        class="grid grid-cols-2 gap-4 bg-surface-container-low p-4 rounded-xl border border-outline-variant">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-label-sm font-bold text-on-surface-variant uppercase">Disciplina</label>
+                            <select
+                                class="bg-surface-container border border-outline-variant rounded px-3 py-2 text-body-md focus:ring-1 focus:ring-brand-guinda focus:outline-none bg-surface-container-highest">
+                                <option>Fútbol</option>
+                                <option>Balonmano</option>
+                                <option>Vóley</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-label-sm font-bold text-on-surface-variant uppercase">Formato de
+                                Competición</label>
+                            <select
+                                class="bg-surface-container border border-outline-variant rounded px-3 py-2 text-body-md focus:ring-1 focus:ring-brand-guinda focus:outline-none bg-surface-container-highest"
+                                id="formatSelector" onchange="switchFormat(this.value)">
+                                <option value="liga">Liga</option>
+                                <option value="grupos">Fase de Grupos</option>
+                                <option value="eliminacion">Eliminación Directa</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dynamic Views Container -->
+                <div class="space-y-8" id="dynamicView">
+                    <!-- Default View: Liga (Tabla de Posiciones) -->
+                    <div class="space-y-4" id="view-liga">
+                        <h3 class="text-headline-sm font-semibold">Tabla de Posiciones</h3>
+                        <div class="overflow-hidden border border-outline-variant rounded-lg">
+                            <table class="w-full text-left border-collapse">
+                                <thead
+                                    class="bg-surface-container-highest text-label-md text-on-surface-variant uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3">Pos</th>
+                                        <th class="px-4 py-3">Equipo</th>
+                                        <th class="px-4 py-3">PJ</th>
+                                        <th class="px-4 py-3">PG</th>
+                                        <th class="px-4 py-3">Pts</th>
+                                        <th class="px-4 py-3">Anotadores</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-surface-container divide-y divide-outline-variant text-body-md">
+                                    <tr class="hover:bg-surface-container-high transition-colors">
+                                        <td class="px-4 py-4 font-bold">1</td>
+                                        <td class="px-4 py-4 flex items-center gap-3">
+                                            <div
+                                                class="w-6 h-6 bg-surface-container-highest rounded-full border border-outline-variant">
+                                            </div>
+                                            Univ. Nacional
+                                        </td>
+                                        <td class="px-4 py-4 data-mono">12</td>
+                                        <td class="px-4 py-4 data-mono">10</td>
+                                        <td class="px-4 py-4 font-bold text-primary">30</td>
+                                        <td class="px-4 py-4 text-on-surface-variant">C. Ortiz (8)</td>
+                                    </tr>
+                                    <tr class="hover:bg-surface-container-high transition-colors">
+                                        <td class="px-4 py-4 font-bold">2</td>
+                                        <td class="px-4 py-4 flex items-center gap-3">
+                                            <div
+                                                class="w-6 h-6 bg-surface-container-highest rounded-full border border-outline-variant">
+                                            </div>
+                                            Inst. Politécnico
+                                        </td>
+                                        <td class="px-4 py-4 data-mono">12</td>
+                                        <td class="px-4 py-4 data-mono">8</td>
+                                        <td class="px-4 py-4 font-bold text-primary">26</td>
+                                        <td class="px-4 py-4 text-on-surface-variant">M. Rojas (6)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- View: Fase de Grupos (Grid of small tables) - Hidden by default -->
+                    <div class="hidden grid grid-cols-1 md:grid-cols-2 gap-6" id="view-grupos">
+                        <div class="border border-outline-variant rounded-lg p-4 bg-surface-container-low">
+                            <h4 class="text-label-md font-bold text-brand-guinda mb-3 uppercase">Grupo A</h4>
+                            <table class="w-full text-xs">
+                                <thead class="text-on-surface-variant border-b border-outline-variant">
+                                    <tr>
+                                        <th class="pb-2">Equipos</th>
+                                        <th class="pb-2 text-right">Pts</th>
+                                        <th class="pb-2 text-right">Anotadores</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant">
+                                    <tr>
+                                        <td class="py-2">Col. Elías</td>
+                                        <td class="py-2 text-right font-bold">9</td>
+                                        <td class="py-2 text-right">J. Doe (3)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">Sta. Fe Academy</td>
+                                        <td class="py-2 text-right font-bold">6</td>
+                                        <td class="py-2 text-right">A. Paz (2)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="border border-outline-variant rounded-lg p-4 bg-surface-container-low">
+                            <h4 class="text-label-md font-bold text-brand-guinda mb-3 uppercase">Grupo B</h4>
+                            <table class="w-full text-xs">
+                                <thead class="text-on-surface-variant border-b border-outline-variant">
+                                    <tr>
+                                        <th class="pb-2">Equipos</th>
+                                        <th class="pb-2 text-right">Pts</th>
+                                        <th class="pb-2 text-right">Anotadores</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant">
+                                    <tr>
+                                        <td class="py-2">U. Central</td>
+                                        <td class="py-2 text-right font-bold">7</td>
+                                        <td class="py-2 text-right">L. Val (4)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">Inst. Norte</td>
+                                        <td class="py-2 text-right font-bold">4</td>
+                                        <td class="py-2 text-right">G. Sol (1)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- View: Eliminación Directa (Brackets) - Hidden by default -->
+                    <div class="hidden overflow-x-auto py-8" id="view-eliminacion">
+                        <div class="flex gap-12 min-w-max px-4">
+                            <!-- Semifinals -->
+                            <div class="flex flex-col justify-around gap-16">
+                                <div
+                                    class="flex flex-col gap-1 w-48 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                                    <div class="px-3 py-2 flex justify-between border-b border-outline-variant"><span
+                                            class="text-xs truncate">Univ. Nacional</span><span
+                                            class="text-xs font-bold text-brand-guinda">2</span></div>
+                                    <div class="px-3 py-2 flex justify-between"><span class="text-xs truncate">Col.
+                                            Elías</span><span class="text-xs font-bold">0</span></div>
+                                </div>
+                                <div
+                                    class="flex flex-col gap-1 w-48 bg-surface-container-low border border-outline-variant rounded overflow-hidden">
+                                    <div class="px-3 py-2 flex justify-between border-b border-outline-variant"><span
+                                            class="text-xs truncate">Inst. Politécnico</span><span
+                                            class="text-xs font-bold text-brand-guinda">3</span></div>
+                                    <div class="px-3 py-2 flex justify-between"><span class="text-xs truncate">U.
+                                            Central</span><span class="text-xs font-bold">2</span></div>
+                                </div>
+                            </div>
+                            <!-- Final -->
+                            <div class="flex flex-col justify-center">
+                                <div
+                                    class="flex flex-col gap-1 w-48 bg-surface-container border-2 border-brand-guinda rounded-lg overflow-hidden shadow-xl shadow-brand-guinda/10">
+                                    <div
+                                        class="bg-brand-guinda px-3 py-1 text-[10px] text-white font-bold uppercase tracking-tighter">
+                                        Gran Final</div>
+                                    <div
+                                        class="px-3 py-3 flex justify-between border-b border-outline-variant items-center">
+                                        <span class="text-sm font-bold truncate">Univ. Nacional</span>
+                                        <span
+                                            class="material-symbols-outlined text-brand-guinda text-lg">emoji_events</span>
+                                    </div>
+                                    <div class="px-3 py-3 flex justify-between items-center">
+                                        <span class="text-sm font-bold truncate">Inst. Politécnico</span>
+                                        <span class="text-xs text-on-surface-variant italic">14:00h</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12">
+                    <h3 class="text-headline-sm font-semibold mb-4">Conflictos Detectados</h3>
+                    <div class="space-y-3">
+                        <div class="p-4 border border-error/30 bg-error/5 rounded-lg flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-error">warning</span>
+                                <p class="text-body-md font-medium text-error-container">Solapamiento de horario:
+                                    Estadio Central (14:00 - 16:00)</p>
+                            </div>
+                            <button
+                                class="text-label-md font-bold underline text-error hover:text-on-error-container">Resolver</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Right Panel: Analytics & Automation (38.2% relative width) -->
+            <aside
+                class="w-full lg:w-[38.2%] p-8 bg-[#1A1A1E] flex flex-col gap-8 overflow-y-auto border-l border-outline-variant">
+                <!-- Automation Module -->
+                <div
+                    class="bg-surface-container border border-outline-variant rounded-xl p-6 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-all pointer-events-none">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-guinda to-transparent"></div>
+                    </div>
+                    <div
+                        class="w-16 h-16 bg-brand-guinda/20 rounded-full flex items-center justify-center mb-4 ring-4 ring-brand-guinda/10">
+                        <span class="material-symbols-outlined text-brand-guinda text-4xl">auto_fix_high</span>
+                    </div>
+                    <h2 class="text-headline-md font-bold mb-2">Motor de Fixture IA</h2>
+                    <p class="text-body-md text-on-surface-variant mb-6 max-w-[280px]">Optimiza fechas y sedes basándote
+                        en disponibilidad histórica y minimización de traslados.</p>
+                    <button
+                        class="w-full py-4 bg-brand-guinda hover:brightness-110 text-white font-bold rounded-lg transition-all active:scale-95 shadow-xl shadow-brand-guinda/20">
+                        GENERAR FIXTURE AUTOMÁTICO
+                    </button>
+                </div>
+                <!-- Predictive Analytics -->
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <h3 class="text-headline-sm font-semibold flex items-center gap-2">
+                            <span class="material-symbols-outlined text-brand-guinda">query_stats</span> Análisis
+                            Predictivo
+                        </h3>
+                        <p class="text-label-md text-on-surface-variant uppercase tracking-widest mt-1">Comportamiento
+                            Institucional</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end">
+                                <span class="text-body-md font-bold">Probabilidad de Asistencia</span>
+                                <span class="text-headline-sm font-bold data-mono text-primary">94.2%</span>
+                            </div>
+                            <div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-guinda transition-all duration-1000" style="width: 94.2%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end">
+                                <span class="text-body-md font-bold">Riesgo de Reprogramación</span>
+                                <span class="text-headline-sm font-bold data-mono text-tertiary">12.8%</span>
+                            </div>
+                            <div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                                <div class="h-full bg-tertiary transition-all duration-1000" style="width: 12.8%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Trend Chart -->
+                    <div class="p-4 border border-outline-variant bg-surface-container-lowest rounded-lg">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-label-md font-bold uppercase text-on-surface-variant">Eficacia de
+                                Anotadores</span>
+                            <span class="text-label-md font-bold text-green-400 flex items-center">
+                                <span class="material-symbols-outlined text-sm mr-1">trending_up</span> +14%
+                            </span>
+                        </div>
+                        <div class="h-16 flex items-end justify-between gap-1 px-1">
+                            <div class="bg-brand-guinda/40 w-full rounded-t" style="height: 40%"></div>
+                            <div class="bg-brand-guinda/40 w-full rounded-t" style="height: 60%"></div>
+                            <div class="bg-brand-guinda/40 w-full rounded-t" style="height: 45%"></div>
+                            <div class="bg-brand-guinda w-full rounded-t" style="height: 85%"></div>
+                            <div class="bg-brand-guinda/40 w-full rounded-t" style="height: 70%"></div>
+                            <div class="bg-brand-guinda w-full rounded-t" style="height: 95%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-auto pt-8 border-t border-outline-variant">
+                    <div
+                        class="flex items-center gap-4 bg-primary-container/5 p-4 rounded-lg border border-brand-guinda/20">
+                        <div class="material-symbols-outlined text-brand-guinda"
+                            style="font-variation-settings: 'FILL' 1;">lightbulb</div>
+                        <p class="text-label-md text-on-surface leading-tight">
+                            <strong>Tip Pro:</strong> El formato de <strong>Eliminación Directa</strong> incrementa la
+                            asistencia un 35%.
+                        </p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    <script>
+        function switchFormat(format) {
+            const views = ['liga', 'grupos', 'eliminacion'];
+            views.forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+            });
+            document.getElementById(`view-${format}`).classList.remove('hidden');
+        }
+
+        // Micro-interactions
+        document.querySelectorAll('.active\\:scale-95').forEach(el => {
+            el.addEventListener('mousedown', () => el.classList.add('scale-95'));
+            el.addEventListener('mouseup', () => el.classList.remove('scale-95'));
+            el.addEventListener('mouseleave', () => el.classList.remove('scale-95'));
+        });
+    </script>
+</body>
+
+</html>

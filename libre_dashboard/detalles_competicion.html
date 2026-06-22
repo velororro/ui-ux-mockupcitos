@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Liga Profesional 2024</title>
+    <!-- Google Fonts: Public Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols Outlined -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="icon" href="../logov.svg" type="image/svg">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3c4a46",
+                        "surface-tint": "#006b5f",
+                        "surface-dim": "#d8dadc",
+                        "primary-fixed": "#62fae3",
+                        "on-secondary-fixed-variant": "#004883",
+                        "primary-container": "#2dd4bf",
+                        "surface-container": "#eceef0",
+                        "outline-variant": "#bacac5",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#4f319c",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#d4e3ff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#e8ddff",
+                        "tertiary-container": "#c6b3ff",
+                        "inverse-surface": "#2d3133",
+                        "on-surface": "#191c1e",
+                        "secondary-fixed-dim": "#a4c9ff",
+                        "surface-variant": "#e0e3e5",
+                        "background": "#f7f9fb",
+                        "primary": "#006b5f",
+                        "secondary": "#0060ac",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1e",
+                        "primary-fixed-dim": "#3cddc7",
+                        "error": "#ba1a1a",
+                        "tertiary": "#674bb5",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#6b7a76",
+                        "on-tertiary-fixed": "#21005e",
+                        "on-primary-fixed-variant": "#005047",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#cebdff",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary-container": "#00574d",
+                        "on-secondary-container": "#003c70",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary-container": "#5538a2",
+                        "surface": "#f7f9fb",
+                        "on-secondary-fixed": "#001c39",
+                        "inverse-primary": "#3cddc7",
+                        "on-primary-fixed": "#00201c",
+                        "secondary-container": "#64a8fe",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "lg": "40px",
+                        "sm": "16px",
+                        "md": "24px",
+                        "xs": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "xl": "64px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Public Sans"],
+                        "label-lg": ["Public Sans"],
+                        "headline-md": ["Public Sans"],
+                        "display-lg": ["Public Sans"],
+                        "label-sm": ["Public Sans"],
+                        "headline-lg": ["Public Sans"],
+                        "body-lg": ["Public Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #f7f9fb;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .active-tab-indicator {
+            background: linear-gradient(90deg, transparent 0%, #006b5f 50%, transparent 100%);
+            height: 3px;
+            bottom: 0;
+            position: absolute;
+            width: 100%;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 107, 95, 0.08);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="text-on-background pb-24">
+    <!-- Top App Bar -->
+    <header
+        class="bg-surface-container-low dark:bg-surface-dim w-full top-0 sticky flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 w-full z-40 transition-colors duration-200 ease-in-out">
+        <div class="flex items-center gap-4">
+            <button class="hover:bg-surface-variant/10 p-2 rounded-full transition-colors">
+                <span class="material-symbols-outlined text-primary">arrow_back</span>
+            </button>
+            <h1 class="font-headline-md text-headline-md font-semibold text-primary">Liga Pro Élite</h1>
+        </div>
+        <button class="hover:bg-surface-variant/10 p-2 rounded-full transition-colors">
+            <span class="material-symbols-outlined text-primary">share</span>
+        </button>
+    </header>
+    <main class="max-w-screen-xl mx-auto px-margin-mobile pt-6 space-y-8">
+        <!-- Hero Section: Tournament Header -->
+        <section class="flex flex-col gap-4">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface">Liga Pro Élite</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Temporada 2024 • Apertura</p>
+                </div>
+                <button
+                    class="flex items-center gap-2 bg-primary-container/20 hover:bg-primary-container/30 text-on-primary-container px-4 py-2 rounded-xl transition-all duration-300 font-label-lg text-label-lg">
+                    <span class="material-symbols-outlined text-[20px]"
+                        style="font-variation-settings: 'FILL' 1;">star</span>
+                    Seguir Competencia
+                </button>
+            </div>
+            <!-- Category Chips / Stats Quick View -->
+            <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                <div
+                    class="bg-primary-container/10 text-primary px-3 py-1 rounded-full text-label-sm font-label-sm whitespace-nowrap">
+                    ⚽ 2.4 Goles/Partidó</div>
+                <div
+                    class="bg-tertiary-container/20 text-tertiary px-3 py-1 rounded-full text-label-sm font-label-sm whitespace-nowrap">
+                    🏆 12 Equipos</div>
+                <div
+                    class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full text-label-sm font-label-sm whitespace-nowrap">
+                    📅 Jornada 14 de 22</div>
+            </div>
+        </section>
+        <!-- Main Tabs Navigation -->
+        <nav class="relative border-b border-outline-variant/20">
+            <div class="flex items-center justify-around">
+                <button class="py-4 px-2 text-primary font-label-lg text-label-lg relative transition-colors"
+                    id="tab-posiciones" onclick="switchMainTab('posiciones')">
+                    Tabla de Posiciones
+                    <div class="active-tab-indicator" id="indicator-posiciones"></div>
+                </button>
+                <button class="py-4 px-2 text-on-surface-variant font-label-lg text-label-lg relative transition-colors"
+                    id="tab-estadisticas" onclick="switchMainTab('estadisticas')">
+                    Estadísticas
+                    <div class="active-tab-indicator hidden" id="indicator-estadisticas"></div>
+                </button>
+                <button class="py-4 px-2 text-on-surface-variant font-label-lg text-label-lg relative transition-colors"
+                    id="tab-detalles" onclick="switchMainTab('detalles')">
+                    Detalles
+                    <div class="active-tab-indicator hidden" id="indicator-detalles"></div>
+                </button>
+            </div>
+        </nav>
+        <!-- Content Area: Bento-inspired Responsive Layout (Golden Ratio implementation via Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+            <!-- Left Column: Main Content (Approx 61.8%) -->
+            <div class="md:col-span-8 space-y-gutter">
+                <!-- Table View Content -->
+                <div class="space-y-6" id="content-posiciones">
+                    <!-- Sub-tabs -->
+                    <div class="flex p-1 bg-surface-container-high rounded-xl w-fit">
+                        <button
+                            class="bg-surface-container-lowest shadow-sm px-6 py-1.5 rounded-lg text-label-sm font-label-sm text-primary">General</button>
+                        <button
+                            class="px-6 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors">Local</button>
+                        <button
+                            class="px-6 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors">Visitante</button>
+                    </div>
+                    <!-- Standing Table -->
+                    <div
+                        class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/10 shadow-sm">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-surface-container-low border-b border-outline-variant/20">
+                                    <tr>
+                                        <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant">#</th>
+                                        <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant">Equipo
+                                        </th>
+                                        <th
+                                            class="px-2 py-3 font-label-sm text-label-sm text-on-surface-variant text-center">
+                                            PJ</th>
+                                        <th
+                                            class="px-2 py-3 font-label-sm text-label-sm text-on-surface-variant text-center">
+                                            G</th>
+                                        <th
+                                            class="px-2 py-3 font-label-sm text-label-sm text-on-surface-variant text-center">
+                                            E</th>
+                                        <th
+                                            class="px-2 py-3 font-label-sm text-label-sm text-on-surface-variant text-center">
+                                            P</th>
+                                        <th
+                                            class="px-2 py-3 font-label-sm text-label-sm text-on-surface-variant text-center">
+                                            DG</th>
+                                        <th
+                                            class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant text-center">
+                                            PTS</th>
+                                        <th class="px-4 py-3 font-label-sm text-label-sm text-on-surface-variant">Forma
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-outline-variant/10">
+                                    <!-- Row 1 -->
+                                    <tr class="hover:bg-primary-container/5 transition-colors">
+                                        <td class="px-4 py-4 font-label-lg text-label-lg text-primary">1</td>
+                                        <td class="px-4 py-4 flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center overflow-hidden">
+                                                <img class="w-6 h-6 object-contain"
+                                                    data-alt="A minimalist professional sports crest for a football club named 'Atlético Imperial'. The design features a stylized eagle in emerald green and white, set against a clean, light-mode background with a premium sports branding aesthetic."
+                                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-vJjx_tXa2D3uPy3ALjfMs-ppEDC5G1iSuT2ixmJ04MZOePR1qJFripH0zBuhR77qC7jptlY78m7QH7lYr8lSQTygLFlwcb7PJ1mSyhzDJB6NDgQSWRTpv8s_DRqJH5xXE4L-W5hQFlkCQX_dTTQoFUYrH0Cc6v3GCPj9nMbsKoWPT0fs6H_pvezTwUgBDGrTTDfz8AtcXQ_oC8QsgYfgYuLmSb7lbm6jeouRP2eUi3pJm4JrfdebZlPiz8Tnn9uyrIQcnIvOapA4" />
+                                            </div>
+                                            <span class="font-body-md text-body-md font-semibold">Atlético
+                                                Imperial</span>
+                                        </td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">14</td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">10</td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">3</td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">1</td>
+                                        <td
+                                            class="px-2 py-4 text-center font-body-md text-body-md text-primary font-semibold">
+                                            +18</td>
+                                        <td
+                                            class="px-4 py-4 text-center font-headline-md text-headline-md font-bold text-primary">
+                                            33</td>
+                                        <td class="px-4 py-4">
+                                            <div class="flex gap-1">
+                                                <span
+                                                    class="w-5 h-5 rounded-full bg-primary-container text-white text-[10px] flex items-center justify-center font-bold">V</span>
+                                                <span
+                                                    class="w-5 h-5 rounded-full bg-primary-container text-white text-[10px] flex items-center justify-center font-bold">V</span>
+                                                <span
+                                                    class="w-5 h-5 rounded-full bg-surface-variant text-on-surface-variant text-[10px] flex items-center justify-center font-bold">E</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 2 -->
+                                    <tr class="hover:bg-primary-container/5 transition-colors">
+                                        <td class="px-4 py-4 font-label-lg text-label-lg">2</td>
+                                        <td class="px-4 py-4 flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center overflow-hidden">
+                                                <img class="w-6 h-6 object-contain"
+                                                    data-alt="Professional sports logo for 'Sportivo Meridiano'. Minimalist circular crest with abstract mountain silhouettes in lavender and soft blue. The visual style is institutional, clean, and modern, suited for a high-performance sports league."
+                                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxmLRytPhoxUVmPcSwFDSnv2OtQdfQi-lbs9Qd4r3bXXFI9ftsPVBekGGiciA4wHrGEtmsRDVzvzE1fb4atKe7cdJwH1Lq3e57HuQ1LybGFDsJYuUQRGlhc8NoiGxm3VzOGRVOtg8h0_4U9kNrvugLoKAGN1AFo_AN7FE2B-x68WCN1VX3q87MQTrOLyB4aMwvaWAmFsP500WxzV6RuLAA2iu49cIA10mYlabotEwgdCPrID9Jrrd1XfNMJtySLE9DegMEYYZIj2Ws" />
+                                            </div>
+                                            <span class="font-body-md text-body-md font-semibold">Sportivo
+                                                Meridiano</span>
+                                        </td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">14</td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">9</td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">2</td>
+                                        <td class="px-2 py-4 text-center font-body-md text-body-md">3</td>
+                                        <td
+                                            class="px-2 py-4 text-center font-body-md text-body-md text-primary font-semibold">
+                                            +12</td>
+                                        <td
+                                            class="px-4 py-4 text-center font-headline-md text-headline-md font-bold text-primary">
+                                            29</td>
+                                        <td class="px-4 py-4">
+                                            <div class="flex gap-1">
+                                                <span
+                                                    class="w-5 h-5 rounded-full bg-error-container text-error text-[10px] flex items-center justify-center font-bold">D</span>
+                                                <span
+                                                    class="w-5 h-5 rounded-full bg-primary-container text-white text-[10px] flex items-center justify-center font-bold">V</span>
+                                                <span
+                                                    class="w-5 h-5 rounded-full bg-primary-container text-white text-[10px] flex items-center justify-center font-bold">V</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Stats View Content (Hidden by default) -->
+                <div class="hidden space-y-6" id="content-estadisticas">
+                    <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 p-md space-y-4">
+                        <div class="flex items-center justify-between border-b border-outline-variant/10 pb-2">
+                            <h3 class="font-headline-md text-headline-md text-primary">Goleadores</h3>
+                            <button class="text-on-surface-variant hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined">filter_list</span>
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- Scorer 1 -->
+                            <div class="flex items-center gap-4 group">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-tertiary-container/30 flex items-center justify-center overflow-hidden">
+                                    <img class="w-full h-full object-cover"
+                                        data-alt="Studio portrait of a professional football player wearing a clean white and emerald green jersey. Minimalist high-key lighting, soft pastel background, professional sports photography style with focus on determination."
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVI-S_3D42IeHJkdNfUkb6r8NiYhS_kDqlnryPbFHhyH_pEpbPjGj9RlnkVAMU-QfL-DvuwlSMvIjN0_FuKQyBxYQ4QHH9rcXTIdcGtBSBsqKbSTUTn7NGy9DdJ1383Zui365nZqAdsyGpKuf-hg0aJZaGycC7BcygGoJsI34vMDmJHuCR3JOPWcQOMEjViVE7xsGsSC1yZYOiIGFnA2mNhPbp6NSK3BnMU7PDZwSPp_R2iNksybQ4D9JwCF6SIsWPBzhSjmxQq3Jd" />
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <p class="font-body-md text-body-md font-semibold">Carlos Mendoza</p>
+                                        <span class="font-headline-md text-headline-md text-primary">12</span>
+                                    </div>
+                                    <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                        <div class="bg-primary h-full transition-all duration-1000 w-[85%]"></div>
+                                    </div>
+                                    <p class="text-label-sm text-on-surface-variant mt-1">Atlético Imperial • 14
+                                        Partidos</p>
+                                </div>
+                            </div>
+                            <!-- Scorer 2 -->
+                            <div class="flex items-center gap-4 group">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-tertiary-container/30 flex items-center justify-center overflow-hidden">
+                                    <img class="w-full h-full object-cover"
+                                        data-alt="High-quality athletic headshot of a diverse soccer player. Soft morning light, professional studio setting with a very light pastel gray backdrop. High-performance athlete aesthetic."
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC4MUpSrV6xHdwz69vELPfszO-IdV4BLFdPlRQZTEjoprK5SvdKzh-Ncvt3BMDK_S7_N5WT9VtP9pQTbf_1jEIjwod0VBo1K8c42HDelsfUA-dTggKh4JtPxGIHOPFCQRLXWgAAJg-Dv9o5PI5BFySbj14M-u-XLf27zmBEhXxjUoOLgQQYpFaToIqX-GUgtWxYchHcDuj-D_sQEHmSnqFfVB0u9AbJ_MDUP42xXXE4EqpVbLHEu421nEXK_zd2AO9hUStdWpoTGWr" />
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <p class="font-body-md text-body-md font-semibold">Julian Vaca</p>
+                                        <span class="font-headline-md text-headline-md text-primary">9</span>
+                                    </div>
+                                    <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                        <div class="bg-primary h-full transition-all duration-1000 w-[60%]"></div>
+                                    </div>
+                                    <p class="text-label-sm text-on-surface-variant mt-1">Sportivo Meridiano • 12
+                                        Partidos</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Details View Content (Hidden by default) -->
+                <div class="hidden space-y-gutter" id="content-detalles">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Fast Stats Card -->
+                        <div class="bg-surface-container-low p-md rounded-2xl border border-outline-variant/10">
+                            <h4
+                                class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider mb-4">
+                                Promedio General</h4>
+                            <div class="flex items-end gap-2">
+                                <span class="font-display-lg text-display-lg text-primary">2.44</span>
+                                <span class="text-body-md text-on-surface-variant mb-2">Goles por partido</span>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-outline-variant/20 flex justify-between">
+                                <div class="text-center">
+                                    <p class="text-label-sm text-on-surface-variant">Tarjetas A.</p>
+                                    <p class="font-headline-md text-headline-md text-on-surface">3.2</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-label-sm text-on-surface-variant">Faltas p/j</p>
+                                    <p class="font-headline-md text-headline-md text-on-surface">18.5</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-label-sm text-on-surface-variant">Efectividad</p>
+                                    <p class="font-headline-md text-headline-md text-on-surface">12%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Current Champion -->
+                        <div
+                            class="bg-tertiary-container/10 p-md rounded-2xl border border-tertiary-container/30 relative overflow-hidden">
+                            <div class="relative z-10">
+                                <h4
+                                    class="font-label-lg text-label-lg text-on-tertiary-container uppercase tracking-wider mb-2">
+                                    Campeón Actual</h4>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-sm">
+                                        <img class="w-10 h-10 object-contain"
+                                            data-alt="Golden tournament trophy icon with minimalist line art. The trophy is elegant, placed centrally against a soft lavender and white backdrop, embodying luxury and sporting excellence."
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC__moozbF5Qc1vCr5s6dxl5RXMEXQ1FV-zNq8mrF3hdHQumKE1WWEzLiFj4eyu76NIyW8cJzQrcUffpbkXRAQ7S1CfAA2U8TRp1mZTqrfMiv4Zc99Jj99jUUnkLb9N7bXE0vRrd7KZkLj6Gqn6brx9TYbQ8rg9cNqdDFXqejv91Rv1d0iNSkEnu4xvJikQy2p4gAAXe_wE4FLyAMMXDVGBDSPYEIcw7um5tD9ViAtgCntDTwJy0EMp_j-u9jIS-AaXie2C8gnrnnS_" />
+                                    </div>
+                                    <div>
+                                        <p class="font-headline-md text-headline-md text-on-tertiary-container">Valle
+                                            Real FC</p>
+                                        <p class="text-label-sm text-on-tertiary-container/70">Edición 2023</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Background Decoration -->
+                            <span
+                                class="material-symbols-outlined absolute -bottom-4 -right-4 text-[120px] text-tertiary/10 rotate-12"
+                                style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column: Sidebar (Approx 38.2%) -->
+            <aside class="md:col-span-4 space-y-gutter">
+                <!-- Palmarés / History Summary -->
+                <div class="glass-card p-md rounded-2xl space-y-4">
+                    <h3 class="font-label-lg text-label-lg text-primary uppercase tracking-widest">Histórico Élite</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between group cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-tertiary">workspace_premium</span>
+                                <span class="font-body-md text-body-md">Valle Real FC</span>
+                            </div>
+                            <span class="font-label-lg text-label-lg bg-surface-container px-2 py-0.5 rounded">3</span>
+                        </div>
+                        <div class="flex items-center justify-between group cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-outline">workspace_premium</span>
+                                <span class="font-body-md text-body-md">Atlético Imperial</span>
+                            </div>
+                            <span class="font-label-lg text-label-lg bg-surface-container px-2 py-0.5 rounded">2</span>
+                        </div>
+                        <div class="flex items-center justify-between group cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-outline">workspace_premium</span>
+                                <span class="font-body-md text-body-md">Sportivo Meridiano</span>
+                            </div>
+                            <span class="font-label-lg text-label-lg bg-surface-container px-2 py-0.5 rounded">1</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Quick Actions / Next Match -->
+                <div
+                    class="bg-primary dark:bg-on-primary-fixed-variant p-md rounded-2xl text-white space-y-4 shadow-lg shadow-primary/20">
+                    <div class="flex justify-between items-center">
+                        <span class="text-label-sm uppercase tracking-tighter opacity-80">Próximo Duelo Clave</span>
+                        <span class="bg-white/20 px-2 py-1 rounded text-[10px] font-bold">EN VIVO MAÑANA</span>
+                    </div>
+                    <div class="flex items-center justify-around py-2">
+                        <div class="text-center">
+                            <div
+                                class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                A</div>
+                            <p class="text-label-sm font-bold">ATL</p>
+                        </div>
+                        <span class="font-display-lg text-display-lg italic opacity-50">VS</span>
+                        <div class="text-center">
+                            <div
+                                class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-2">
+                                M</div>
+                            <p class="text-label-sm font-bold">MER</p>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full bg-white text-primary font-label-lg text-label-lg py-3 rounded-xl hover:bg-primary-fixed transition-colors active:scale-95 duration-150">
+                        Configurar Recordatorio
+                    </button>
+                </div>
+                <!-- Recent Activity Feed -->
+                <div class="space-y-4">
+                    <h3 class="font-label-lg text-label-lg text-on-surface-variant px-2">Últimas Noticias</h3>
+                    <div class="bg-surface-container-low p-sm rounded-xl border border-outline-variant/10 flex gap-3">
+                        <div class="w-16 h-16 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+                            <img class="w-full h-full object-cover"
+                                data-alt="A cinematic wide-angle shot of a lush, professional emerald green soccer field under a bright, high-key daytime sun. Soft pastel skies in the background. Minimalist and professional sports photography aesthetic."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqjxzoRoKOvThTW7SoXTS0lB9_JkWmXy1tdLPGoh3Pz2_OPpndwxKfBH7nGNqKJcWw80fPVZPJdXe2QuveE-SuwnGYkzeY986UlX8J-PiS9bARkScm_pURIvK_v8aNmO6hSjetG1zTcQzoeslSff-CpCm2haMZNtcLjTMPCdFvi4Q-uMBeaVg1NkswG5ZcJOk30gkUZsJvuUAH0kDnb-9qCx7RKEF9C3xXtEnJirNhSpZgNTF_jd-KHPInqcVwDEN2WSUIG74TwXrM" />
+                        </div>
+                        <div>
+                            <p class="font-label-sm text-label-sm text-primary mb-1">MERCADO</p>
+                            <p class="font-body-md text-body-md leading-tight line-clamp-2">Nuevos fichajes inscritos
+                                para la segunda fase del torneo.</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    <!-- Bottom Navigation Bar (Fixed for Mobile) -->
+    <nav
+        class="fixed bottom-0 w-full flex justify-around items-center py-xs bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant/10 dark:border-outline/10 shadow-sm z-50 rounded-t-xl md:hidden">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-all scale-95 active:scale-90 duration-150"
+            href="#">
+            <span class="material-symbols-outlined">home</span>
+            <span class="font-label-sm text-label-sm">Inicio</span>
+        </a>
+        <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-95 active:scale-90 transition-all duration-150"
+            href="#">
+            <span class="material-symbols-outlined">emoji_events</span>
+            <span class="font-label-sm text-label-sm">Torneos</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-all scale-95 active:scale-90 duration-150"
+            href="#">
+            <span class="material-symbols-outlined">leaderboard</span>
+            <span class="font-label-sm text-label-sm">Estadísticas</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-all scale-95 active:scale-90 duration-150"
+            href="#">
+            <span class="material-symbols-outlined">person</span>
+            <span class="font-label-sm text-label-sm">Perfil</span>
+        </a>
+    </nav>
+    <script>
+        function switchMainTab(tabId) {
+            // Hide all content sections
+            const contents = ['posiciones', 'estadisticas', 'detalles'];
+            contents.forEach(id => {
+                document.getElementById(`content-${id}`).classList.add('hidden');
+                document.getElementById(`indicator-${id}`).classList.add('hidden');
+                document.getElementById(`tab-${id}`).classList.remove('text-primary');
+                document.getElementById(`tab-${id}`).classList.add('text-on-surface-variant');
+            });
+
+            // Show selected content section
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            document.getElementById(`indicator-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('text-primary');
+            document.getElementById(`tab-${tabId}`).classList.remove('text-on-surface-variant');
+        }
+
+        // Initialize micro-interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.transform = 'translateX(4px)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.transform = 'translateX(0)';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

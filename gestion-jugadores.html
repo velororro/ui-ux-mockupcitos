@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>EDU-0003: Gestión de Jugadores y Elegibilidad</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e4e1e7",
+                        "on-primary-fixed-variant": "#354572",
+                        "tertiary-container": "#bb8558",
+                        "secondary": "#c1c5dd",
+                        "surface-container": "#1f1f23",
+                        "surface": "#131317",
+                        "on-secondary-fixed-variant": "#414659",
+                        "on-tertiary-container": "#432100",
+                        "surface-variant": "#343439",
+                        "primary": "#b5c5fa",
+                        "surface-container-lowest": "#0e0e12",
+                        "on-tertiary-fixed": "#2e1500",
+                        "on-tertiary": "#4b2702",
+                        "surface-dim": "#131317",
+                        "surface-container-highest": "#343439",
+                        "on-primary": "#1d2e5a",
+                        "inverse-surface": "#e4e1e7",
+                        "tertiary": "#f7ba89",
+                        "on-surface-variant": "#c5c6d0",
+                        "surface-container-low": "#1b1b1f",
+                        "on-primary-fixed": "#051944",
+                        "inverse-primary": "#4d5d8b",
+                        "on-error": "#690005",
+                        "surface-bright": "#39393d",
+                        "primary-container": "#7f8fc1",
+                        "on-tertiary-fixed-variant": "#663d16",
+                        "on-surface": "#e4e1e7",
+                        "on-secondary-container": "#b6bbd2",
+                        "tertiary-fixed": "#ffdcc2",
+                        "secondary-fixed": "#dde1fa",
+                        "on-secondary-fixed": "#161b2c",
+                        "on-primary-container": "#162853",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#b5c5fa",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#f7ba89",
+                        "background": "#131317",
+                        "surface-container-high": "#2a2a2e",
+                        "inverse-on-surface": "#303034",
+                        "on-error-container": "#ffdad6",
+                        "secondary-container": "#464b5e",
+                        "primary-fixed": "#dae1ff",
+                        "outline": "#8f909a",
+                        "secondary-fixed-dim": "#c1c5dd",
+                        "on-secondary": "#2b3042",
+                        "outline-variant": "#45464f",
+                        "surface-tint": "#b5c5fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "display": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #131317;
+            color: #e4e1e7;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+        }
+
+        .data-table-row:hover {
+            background-color: rgba(181, 197, 250, 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1b1b1f;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #45464f;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body class="overflow-hidden h-screen flex flex-col">
+    <!-- TopNavBar Implementation from JSON -->
+    <header
+        class="bg-surface-container text-primary font-body-md text-body-md w-full h-16 border-b border-outline-variant flex justify-between items-center px-6 shrink-0">
+        <div class="flex items-center gap-8">
+            <span class="font-headline-md text-headline-md font-bold text-primary">EDU-0002 Gestión</span>
+            <div class="relative group">
+                <span
+                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+                    <span class="material-symbols-outlined">search</span>
+                </span>
+                <input
+                    class="bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-4 py-1.5 w-64 focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none"
+                    placeholder="Buscar jugadores..." type="text">
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="p-2 hover:bg-surface-container-high transition-colors rounded-full relative">
+                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+            </button>
+            <button class="p-2 hover:bg-surface-container-high transition-colors rounded-full">
+                <span class="material-symbols-outlined" data-icon="settings">settings</span>
+            </button>
+            <button class="p-2 hover:bg-surface-container-high transition-colors rounded-full">
+                <span class="material-symbols-outlined" data-icon="help">help</span>
+            </button>
+            <div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+            <div class="flex items-center gap-3">
+                <span class="text-right">
+                    <p class="text-sm font-bold text-on-surface">Admin Global</p>
+                    <p class="text-xs text-on-surface-variant">Soporte Técnico</p>
+                </span>
+                <div class="w-10 h-10 rounded-lg overflow-hidden border border-outline-variant">
+                    <img alt="Administrator Avatar"
+                        data-alt="A professional headshot of a corporate administrator for a high-end academic console. The subject is a male in his 40s with a confident expression, wearing a tailored charcoal suit and a crisp white shirt. The background is a soft-focus office interior with cool blue and slate grey tones, echoing a modern dark-mode interface design. Soft, diffused lighting highlights his professional demeanor."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1sGwT0YA2J-gBxBqMtdmHdwFxdDmmsCyGsQesSwqI-AWL9TcKb5A2Ew7__sOCwnwfjWOzTk5L7RAnsiQMmpw78yJSFlfUtHyMsDINV75sMQXgHGu1ZVCAItBSbHbL_XAqLI-J3htw_ODxyFZ6g11kJh2I2jqmYRzuvuQADTgL79irXkDloBTiCpVu4tAa7sEXAMU7NXW5CehYWsw1WRQFjWMGoN5NPuD1cIYbpU9FHjLydICSTX2cJJx4S4xB7VW1ClUI2gysgenX">
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="flex flex-1 overflow-hidden">
+        <!-- SideNavBar Implementation from JSON -->
+        <aside
+            class="bg-surface-container text-primary font-label-md text-label-md fixed md:relative left-0 top-0 h-full w-[260px] border-r border-outline-variant flex flex-col py-8 shrink-0">
+            <div class="px-6 mb-8">
+                <h1 class="font-headline-lg text-headline-lg font-black text-on-surface tracking-tighter">Admin Console
+                </h1>
+                <p class="text-on-surface-variant opacity-70">Institutional Control</p>
+            </div>
+            <nav class="flex-1 space-y-1 px-3">
+                <div class="space-y-1"><button
+                        class="w-full flex items-center justify-between px-3 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg group">
+                        <div class="flex items-center gap-3"><span
+                                class="material-symbols-outlined group-hover:scale-110 duration-200">dashboard</span><span
+                                class="">Dashboard</span></div><span
+                            class="material-symbols-outlined text-sm">expand_more</span>
+                    </button></div>
+                <div class="space-y-1"><button
+                        class="w-full flex items-center justify-between px-3 py-3 bg-primary-container text-on-primary-container border-l-4 border-primary transition-all rounded-lg">
+                        <div class="flex items-center gap-3"><span class="material-symbols-outlined">groups</span><span
+                                class="font-bold">Teams</span></div><span
+                            class="material-symbols-outlined text-sm">expand_more</span>
+                    </button></div>
+                <div class="space-y-1"><button
+                        class="w-full flex items-center justify-between px-3 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg group">
+                        <div class="flex items-center gap-3"><span
+                                class="material-symbols-outlined group-hover:scale-110 duration-200">corporate_fare</span><span
+                                class="">Organizations</span></div><span
+                            class="material-symbols-outlined text-sm">expand_more</span>
+                    </button></div>
+                <div class="space-y-1"><button
+                        class="w-full flex items-center justify-between px-3 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg group">
+                        <div class="flex items-center gap-3"><span
+                                class="material-symbols-outlined group-hover:scale-110 duration-200">security</span><span
+                                class="">Integrity Reports</span></div><span
+                            class="material-symbols-outlined text-sm">expand_more</span>
+                    </button></div>
+            </nav>
+            <div class="mt-auto px-6 space-y-4">
+                <button
+                    class="w-full bg-primary text-on-primary font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                    Generate Report
+                </button>
+                <div class="pt-4 border-t border-outline-variant space-y-1">
+                    <a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all"
+                        href="#"><span class="material-symbols-outlined" data-icon="person">person</span><span
+                            class="">Perfil</span></a>
+                    <a class="flex items-center gap-3 px-3 py-2 text-error hover:bg-error/10 rounded-lg transition-all"
+                        href="#"><span class="material-symbols-outlined" data-icon="logout">logout</span><span
+                            class="">Cerrar Sesión</span></a>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Dashboard Content -->
+        <main class="flex-1 overflow-hidden flex flex-col bg-surface">
+            <!-- Breadcrumbs / Header Section -->
+            <div class="p-6 border-b border-outline-variant/30 flex justify-between items-end">
+                <div>
+                    <h2 class="text-2xl font-bold text-on-surface tracking-tight">Directorio de Jugadores</h2>
+                    <p class="text-on-surface-variant text-sm mt-1">Gestión centralizada de elegibilidad académica y
+                        deportiva.</p>
+                </div>
+                <div class="flex gap-3">
+                    <button
+                        class="flex items-center gap-2 bg-surface-container-high border border-outline-variant text-on-surface px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-all text-sm font-medium">
+                        <span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Filtros Avanzados
+                    </button>
+                    <button
+                        class="flex items-center gap-2 bg-surface-container-high border border-outline-variant text-on-surface px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-all text-sm font-medium">
+                        <span class="material-symbols-outlined text-[18px]">download</span>
+                        Exportar
+                    </button>
+                </div>
+            </div>
+            <!-- Content Area Split -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- 61.8% Main Area: Directory -->
+                <section class="w-[61.8%] flex flex-col h-full border-r border-outline-variant/30 overflow-hidden">
+                    <div class="flex-1 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="sticky top-0 bg-surface-container-low z-10 border-b border-outline-variant">
+                                <tr>
+                                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-outline">
+                                        Perfil</th>
+                                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-outline">
+                                        Colegiatura</th>
+                                    <th
+                                        class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-outline text-center">
+                                        Edad</th>
+                                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-outline">
+                                        Categoría</th>
+                                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-outline">
+                                        Estado</th>
+                                    <th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-outline">
+                                        Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/20">
+                                <!-- Row 1 -->
+                                <tr class="data-table-row transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary font-bold">
+                                                SM</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-on-surface">Santiago Mendoza</div>
+                                                <div class="text-xs text-on-surface-variant font-mono">DNI: 72.841.902
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm font-mono text-primary">#COL-2024-81</td>
+                                    <td class="px-6 py-4 text-sm text-center">21</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm">Baloncesto</div>
+                                        <div class="text-xs text-on-surface-variant">Titular A</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
+                                            HABILITADO
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button
+                                            class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn">
+                                            <span class="text-xs font-bold">Ver Historial</span>
+                                            <span
+                                                class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">chevron_right</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Row 2 -->
+                                <tr class="data-table-row transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary font-bold">
+                                                VR</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-on-surface">Valeria Rojas</div>
+                                                <div class="text-xs text-on-surface-variant font-mono">DNI: 68.321.411
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm font-mono text-primary">#COL-2024-12</td>
+                                    <td class="px-6 py-4 text-sm text-center">19</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm">Voleibol</div>
+                                        <div class="text-xs text-on-surface-variant">Promesas B</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-error/10 text-error border border-error/20">
+                                            NO HABILITADO
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button
+                                            class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn">
+                                            <span class="text-xs font-bold">Ver Historial</span>
+                                            <span
+                                                class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">chevron_right</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Row 3 -->
+                                <tr class="data-table-row transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary font-bold">
+                                                JC</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-on-surface">Julián Castillo</div>
+                                                <div class="text-xs text-on-surface-variant font-mono">DNI: 74.001.298
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm font-mono text-primary">#COL-2023-95</td>
+                                    <td class="px-6 py-4 text-sm text-center">23</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm">Fútbol</div>
+                                        <div class="text-xs text-on-surface-variant">Élite Sub-23</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
+                                            HABILITADO
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button
+                                            class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn">
+                                            <span class="text-xs font-bold">Ver Historial</span>
+                                            <span
+                                                class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">chevron_right</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Row 4 -->
+                                <tr class="data-table-row transition-colors group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary font-bold">
+                                                AA</div>
+                                            <div>
+                                                <div class="text-sm font-bold text-on-surface">Ana Alvarado</div>
+                                                <div class="text-xs text-on-surface-variant font-mono">DNI: 70.219.833
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm font-mono text-primary">#COL-2024-04</td>
+                                    <td class="px-6 py-4 text-sm text-center">20</td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm">Natación</div>
+                                        <div class="text-xs text-on-surface-variant">Competencia</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
+                                            HABILITADO
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button
+                                            class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 group/btn">
+                                            <span class="text-xs font-bold">Ver Historial</span>
+                                            <span
+                                                class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">chevron_right</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <!-- 38.2% Sidebar: Actions & Intake -->
+                <aside class="w-[38.2%] flex flex-col bg-surface-container-low overflow-y-auto custom-scrollbar">
+                    <!-- Top Section: Carga Masiva -->
+                    <div class="p-8 border-b border-outline-variant/30">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+                                <span class="material-symbols-outlined text-[20px]">upload_file</span>
+                            </span>
+                            <h3 class="text-lg font-bold text-on-surface">Carga Masiva</h3>
+                        </div>
+                        <div
+                            class="relative group border-2 border-dashed border-outline-variant rounded-xl p-8 transition-all hover:border-primary hover:bg-primary/5 flex flex-col items-center justify-center text-center cursor-pointer">
+                            <input accept=".csv, .xlsx" class="absolute inset-0 opacity-0 cursor-pointer" type="file">
+                            <span
+                                class="material-symbols-outlined text-[48px] text-outline group-hover:text-primary mb-4 transition-colors">cloud_upload</span>
+                            <p class="text-on-surface font-bold">Arrastra tu archivo aquí</p>
+                            <p class="text-on-surface-variant text-sm mt-1">Formatos permitidos: .Excel, .CSV (Máx.
+                                10MB)</p>
+                            <button
+                                class="mt-6 px-6 py-2 bg-surface-container-high border border-outline-variant text-on-surface rounded-lg font-bold text-sm hover:bg-surface-container-highest transition-all">
+                                Seleccionar Archivo
+                            </button>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between text-xs text-on-surface-variant">
+                            <a class="flex items-center gap-1 hover:text-primary transition-colors" href="#">
+                                <span class="material-symbols-outlined text-[14px]">download</span>
+                                Descargar Plantilla .XLSX
+                            </a>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px] text-tertiary">info</span>
+                                Validación automática activa
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Bottom Section: Registro Manual -->
+                    <div class="p-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary">
+                                <span class="material-symbols-outlined text-[20px]">person_add</span>
+                            </span>
+                            <h3 class="text-lg font-bold text-on-surface">Registro Manual</h3>
+                        </div>
+                        <form class="space-y-5">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold uppercase tracking-widest text-outline mb-2">Nombre
+                                    Completo</label>
+                                <input
+                                    class="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-on-surface focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none"
+                                    placeholder="Ej: Juan Pérez" type="text">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold uppercase tracking-widest text-outline mb-2">DNI
+                                        / Identificación</label>
+                                    <input
+                                        class="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-on-surface font-mono focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none"
+                                        placeholder="00.000.000" type="text">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold uppercase tracking-widest text-outline mb-2">Colegiatura</label>
+                                    <input
+                                        class="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-on-surface font-mono focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none"
+                                        placeholder="COL-XXXX" type="text">
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold uppercase tracking-widest text-outline mb-2">Selección
+                                    de Equipo</label>
+                                <select
+                                    class="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2.5 text-on-surface focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none appearance-none">
+                                    <option value="">Seleccione una disciplina...</option>
+                                    <option value="balonmano">Balonmano</option>
+                                    <option value="voley">Vóley</option>
+                                    <option value="futbol">Fútbol</option>
+                                </select>
+                            </div>
+                            <div class="pt-4">
+                                <button
+                                    class="w-full bg-primary text-on-primary font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/10"
+                                    type="submit">
+                                    Finalizar Registro
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Sidebar Footer Stats -->
+                    <div class="mt-auto p-8 bg-surface-container-highest/20 border-t border-outline-variant/30">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-surface-container p-3 rounded-lg">
+                                <p class="text-[10px] uppercase font-black text-outline">Total Jugadores</p>
+                                <p class="text-xl font-bold text-primary">1,284</p>
+                            </div>
+                            <div class="bg-surface-container p-3 rounded-lg">
+                                <p class="text-[10px] uppercase font-black text-outline">Pendientes Rev.</p>
+                                <p class="text-xl font-bold text-tertiary">42</p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+    <!-- Micro-interaction Script -->
+    <script>
+        document.querySelectorAll('.data-table-row').forEach(row => {
+            row.addEventListener('click', () => {
+                // In a real app, this would open details
+                console.log('Player row clicked');
+            });
+        });
+
+        // Simple form interaction
+        const manualForm = document.querySelector('form');
+        manualForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Procesando nuevo registro de jugador...');
+        });
+    </script>
+
+
+</body>
+
+</html>

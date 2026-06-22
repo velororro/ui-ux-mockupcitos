@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EDU-0004 Gestión de Torneos</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#dde1fa",
+                        "surface-dim": "#131317",
+                        "surface-container-lowest": "#0e0e12",
+                        "tertiary-fixed-dim": "#f7ba89",
+                        "surface-bright": "#39393d",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#414659",
+                        "primary": "#b5c5fa",
+                        "on-background": "#e4e1e7",
+                        "secondary-container": "#464b5e",
+                        "on-tertiary-fixed": "#2e1500",
+                        "on-tertiary-fixed-variant": "#663d16",
+                        "error": "#ffb4ab",
+                        "tertiary": "#f7ba89",
+                        "surface-tint": "#b5c5fa",
+                        "secondary-fixed-dim": "#c1c5dd",
+                        "on-primary-fixed-variant": "#354572",
+                        "on-tertiary": "#4b2702",
+                        "tertiary-fixed": "#ffdcc2",
+                        "primary-fixed-dim": "#b5c5fa",
+                        "outline-variant": "#45464f",
+                        "surface-container-highest": "#343439",
+                        "on-surface-variant": "#c5c6d0",
+                        "on-primary-fixed": "#051944",
+                        "surface-variant": "#343439",
+                        "on-surface": "#e4e1e7",
+                        "secondary": "#c1c5dd",
+                        "on-tertiary-container": "#432100",
+                        "surface-container": "#1f1f23",
+                        "background": "#131317",
+                        "primary-fixed": "#dae1ff",
+                        "error-container": "#93000a",
+                        "on-primary-container": "#162853",
+                        "on-secondary": "#2b3042",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#8f909a",
+                        "surface-container-high": "#2a2a2e",
+                        "primary-container": "#7f8fc1",
+                        "tertiary-container": "#bb8558",
+                        "inverse-primary": "#4d5d8b",
+                        "surface-container-low": "#1b1b1f",
+                        "on-primary": "#1d2e5a",
+                        "inverse-on-surface": "#303034",
+                        "on-secondary-fixed": "#161b2c",
+                        "on-secondary-container": "#b6bbd2",
+                        "surface": "#131317",
+                        "inverse-surface": "#e4e1e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "display": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+            background-color: #131317;
+            color: #e4e1e7;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #131317;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #45464f;
+            border-radius: 10px;
+        }
+
+        .golden-grid {
+            display: grid;
+            grid-template-columns: 38.2% 61.8%;
+            height: calc(100vh - 64px);
+        }
+
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #45464f;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #b5c5fa;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #162853;
+        }
+    </style>
+</head>
+
+<body class="overflow-hidden">
+    <!-- TopNavBar -->
+    <header
+        class="w-full top-0 sticky border-b border-outline-variant bg-surface-container flex justify-between items-center px-6 h-16 z-50">
+        <div class="flex items-center gap-8">
+            <h1 class="text-headline-md font-bold text-primary tracking-tight">EDU-0004 Gestión de Torneos</h1>
+            <nav class="hidden md:flex items-center gap-6">
+                <a class="text-primary border-b-2 border-primary font-semibold pb-1 transition-colors"
+                    href="#">Gestión</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Reportes</a>
+                <a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Auditoría</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 mr-4">
+                <button
+                    class="px-4 py-2 text-label-md font-semibold text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg active:scale-95">Descartar</button>
+                <button
+                    class="px-6 py-2 bg-primary text-on-primary font-bold text-label-md rounded-lg shadow-sm hover:brightness-110 transition-all active:scale-95">Guardar
+                    Cambios</button>
+            </div>
+            <div class="flex gap-2 text-on-surface-variant">
+                <span
+                    class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+                <span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors"
+                    title="Perfil">person</span>
+            </div>
+            <div
+                class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+                <img alt="Admin Profile Avatar" class="w-full h-full object-cover"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeCSWyLgo5g7mTr7GmmyyiKAofLrouGdRGSnfDLze2lABh702nMzp3TvQfR-lQzufY1GEENa4cdhkKf64jqtv20gKOX0V0ppi_4lRWY6KwtdBnWqG_6ROIHxB2XYvE5vOYVWvgAg_fOLAJXG_HSwfBgwnyQkN0yBDzSE3QDGLnClsuz5TFSXG7T58xSUuShwnhCXGA0KTWNE8wHoa2rqTdkp1gAULATcCphwsAvF_LBKjvcFkts_YatPd7hqiUFJpStzdxdmc0Xtqz" />
+            </div>
+        </div>
+    </header>
+    <main class="golden-grid">
+        <!-- Columna Izquierda: Árbol de Navegación -->
+        <aside class="bg-[#0A0A0C] border-r border-outline-variant overflow-y-auto py-8 px-8">
+            <div class="mb-8">
+                <h2 class="text-label-md uppercase tracking-[0.2em] text-outline mb-6">Disciplinas y Categorías</h2>
+                <div class="space-y-4">
+                    <!-- Fútbol (Active) -->
+                    <div class="group">
+                        <div
+                            class="flex items-center justify-between p-3 bg-surface-container-low border-l-4 border-error rounded-r-lg cursor-pointer transition-all">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-error">sports_soccer</span>
+                                <span class="font-semibold text-on-surface">Fútbol</span>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-outline group-hover:rotate-90 transition-transform">chevron_right</span>
+                        </div>
+                        <div class="ml-10 mt-2 space-y-1">
+                            <div
+                                class="py-2 px-3 text-body-md text-primary font-medium hover:bg-surface-container-high rounded transition-colors cursor-pointer flex items-center justify-between">
+                                Sub-15
+                                <span class="w-2 h-2 rounded-full bg-primary"></span>
+                            </div>
+                            <div
+                                class="py-2 px-3 text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors cursor-pointer">
+                                Sub-17</div>
+                            <div
+                                class="py-2 px-3 text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors cursor-pointer">
+                                Senior</div>
+                        </div>
+                    </div>
+                    <!-- Baloncesto -->
+                    <div class="group">
+                        <div
+                            class="flex items-center justify-between p-3 hover:bg-surface-container-high rounded-lg cursor-pointer transition-all">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-outline">sports_basketball</span>
+                                <span class="font-medium text-on-surface-variant">Baloncesto</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline">chevron_right</span>
+                        </div>
+                    </div>
+                    <!-- Voleibol -->
+                    <div class="group">
+                        <div
+                            class="flex items-center justify-between p-3 hover:bg-surface-container-high rounded-lg cursor-pointer transition-all">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-outline">sports_volleyball</span>
+                                <span class="font-medium text-on-surface-variant">Voleibol</span>
+                            </div>
+                            <span class="material-symbols-outlined text-outline">chevron_right</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-outline-variant/30">
+                <button
+                    class="w-full py-3 flex items-center justify-center gap-2 border border-dashed border-outline-variant hover:border-primary hover:text-primary transition-all rounded-lg text-label-md font-bold uppercase tracking-wider text-outline">
+                    <span class="material-symbols-outlined">add</span>
+                    Añadir Disciplina
+                </button>
+            </div>
+            <div class="mt-auto pt-8"><button
+                    class="flex items-center gap-3 p-3 w-full text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg transition-all cursor-pointer"><span
+                        class="material-symbols-outlined">logout</span><span class="font-medium">Cerrar
+                        Sesión</span></button></div>
+        </aside>
+        <!-- Columna Derecha: Panel de Reglas -->
+        <section class="bg-background overflow-y-auto p-10">
+            <div class="max-w-[900px] mx-auto">
+                <header class="mb-10">
+                    <div
+                        class="flex items-center gap-2 text-primary text-label-md font-bold uppercase tracking-widest mb-2">
+                        <span class="material-symbols-outlined text-[18px]">gavel</span>
+                        Parámetros de Competición
+                    </div>
+                    <h3 class="text-headline-lg font-bold text-on-surface">Configuración de Torneo</h3>
+                    <div class="mt-4 mb-2"><label
+                            class="text-label-md text-on-surface-variant block mb-2 font-bold uppercase tracking-tighter">Disciplina</label><select
+                            class="w-full max-w-xs bg-surface-container border border-outline-variant rounded-lg text-on-surface px-4 py-2 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none appearance-none cursor-pointer">
+                            <option selected="">Fútbol</option>
+                            <option>Balonmano</option>
+                            <option>Vóley</option>
+                            <option>Baloncesto</option>
+                        </select></div>
+                    <p class="text-on-surface-variant mt-2 font-body">Define la estructura reglamentaria y logística
+                        para el torneo académico actual.</p>
+                </header>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Tarjeta 1: Tipo de Campeonato -->
+                    <div
+                        class="bg-[#16161A] p-6 rounded-xl border border-outline-variant/40 hover:border-primary/50 transition-colors col-span-2">
+                        <h4 class="text-body-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">account_tree</span>
+                            Tipo de Campeonato
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="relative cursor-pointer group">
+                                <input checked="" class="peer sr-only" name="championship_type" type="radio" />
+                                <div
+                                    class="p-4 border-2 border-outline-variant rounded-lg bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                                    <div class="flex flex-col items-center text-center gap-3">
+                                        <span
+                                            class="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors">reorder</span>
+                                        <div>
+                                            <div class="text-body-md font-bold text-on-surface">Grupos + Playoffs</div>
+                                            <div class="text-label-md text-on-surface-variant">Fase clasificatoria y
+                                                llaves</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span
+                                    class="absolute top-3 right-3 material-symbols-outlined text-primary opacity-0 peer-checked:opacity-100">check_circle</span>
+                            </label>
+                            <label class="relative cursor-pointer group">
+                                <input class="peer sr-only" name="championship_type" type="radio" />
+                                <div
+                                    class="p-4 border-2 border-outline-variant rounded-lg bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                                    <div class="flex flex-col items-center text-center gap-3">
+                                        <span
+                                            class="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors">swords</span>
+                                        <div>
+                                            <div class="text-body-md font-bold text-on-surface">Eliminación Directa
+                                            </div>
+                                            <div class="text-label-md text-on-surface-variant">Llave de muerte súbita
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span
+                                    class="absolute top-3 right-3 material-symbols-outlined text-primary opacity-0 peer-checked:opacity-100">check_circle</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Tarjeta 2: Configuración de Fases -->
+                    <div class="bg-[#16161A] p-6 rounded-xl border border-outline-variant/40">
+                        <h4 class="text-body-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">group_work</span>
+                            Grupos y Fases
+                        </h4>
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="text-label-md text-on-surface-variant block mb-2 font-bold uppercase tracking-tighter">Cantidad
+                                    de Grupos</label>
+                                <select
+                                    class="w-full bg-surface-container border border-outline-variant rounded-lg text-on-surface px-4 py-2.5 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none cursor-pointer">
+                                    <option>4 Grupos</option>
+                                    <option selected="">8 Grupos</option>
+                                    <option>16 Grupos</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center justify-between py-2">
+                                <span class="text-body-md text-on-surface">Partidos Ida y Vuelta</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input checked="" class="sr-only peer" type="checkbox" />
+                                    <div
+                                        class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tarjeta 3: Cantidad Máxima -->
+                    <div class="bg-[#16161A] p-6 rounded-xl border border-outline-variant/40">
+                        <h4 class="text-body-lg font-bold text-on-surface mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">groups</span>
+                            Equipos Participantes
+                        </h4>
+                        <div class="flex flex-col h-full justify-between">
+                            <div class="flex items-end justify-between mb-4">
+                                <span class="text-headline-xl font-bold text-primary" id="rangeValue">32</span>
+                                <span class="text-label-md text-outline font-bold uppercase">Cupos Máximos</span>
+                            </div>
+                            <input class="custom-slider mb-8" id="teamRange" max="64" min="4" type="range" value="32" />
+                            <div class="flex justify-between text-label-md text-on-surface-variant font-medium">
+                                <span>MIN: 04</span>
+                                <span>MAX: 64</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tarjeta 4: Reglas Específicas -->
+                    <div
+                        class="bg-[#16161A] p-6 rounded-xl border border-outline-variant/40 hover:border-primary/50 transition-colors col-span-2">
+                        <h4 class="text-body-lg font-bold text-on-surface mb-6 flex items-center gap-2"><span
+                                class="material-symbols-outlined text-primary">rule</span>Reglas por Disciplina</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label
+                                class="flex items-center gap-3 p-4 border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors"><input
+                                    checked=""
+                                    class="w-5 h-5 rounded border-outline-variant bg-surface-container text-primary focus:ring-primary/20"
+                                    type="checkbox" /><span class="text-body-md text-on-surface">Uso de equipamiento
+                                    oficial obligatorio</span></label><label
+                                class="flex items-center gap-3 p-4 border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors"><input
+                                    class="w-5 h-5 rounded border-outline-variant bg-surface-container text-primary focus:ring-primary/20"
+                                    type="checkbox" /><span class="text-body-md text-on-surface">Validación de carnets
+                                    estudiantiles</span></label></div>
+                    </div>
+                    <div class="bg-[#16161A] p-6 rounded-xl border border-outline-variant/40 col-span-2">
+                        <h4 class="text-body-lg font-bold text-on-surface mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">description</span>
+                            Reglamento Técnico Específico
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/20">
+                                <div class="text-label-md text-primary font-bold uppercase mb-2">Duración</div>
+                                <div class="text-body-md text-on-surface-variant leading-relaxed">
+                                    • Dos tiempos de 35 min.<br />
+                                    • Entretiempo: 10 min.<br />
+                                    • Tiempo extra: N/A.
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/20">
+                                <div class="text-label-md text-primary font-bold uppercase mb-2">Sustituciones</div>
+                                <div class="text-body-md text-on-surface-variant leading-relaxed">
+                                    • Máximo 5 cambios.<br />
+                                    • 3 ventanas de tiempo.<br />
+                                    • Cambios ilimitados (Retorno).
+                                </div>
+                            </div>
+                            <div
+                                class="bg-[#16161A] p-6 rounded-xl border border-outline-variant/40 hover:border-primary/50 transition-colors col-span-2">
+                                <h4 class="text-body-lg font-bold text-on-surface mb-6 flex items-center gap-2"><span
+                                        class="material-symbols-outlined text-primary">rule</span>Reglas por Disciplina
+                                </h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label
+                                        class="flex items-center gap-3 p-4 border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors"><input
+                                            checked=""
+                                            class="w-5 h-5 rounded border-outline-variant bg-surface-container text-primary focus:ring-primary/20"
+                                            type="checkbox" /><span class="text-body-md text-on-surface">Uso de
+                                            equipamiento oficial obligatorio</span></label><label
+                                        class="flex items-center gap-3 p-4 border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low transition-colors"><input
+                                            class="w-5 h-5 rounded border-outline-variant bg-surface-container text-primary focus:ring-primary/20"
+                                            type="checkbox" /><span class="text-body-md text-on-surface">Validación de
+                                            carnets estudiantiles</span></label></div>
+                            </div>
+                            <div class="p-4 bg-surface-container-lowest rounded-lg border border-outline-variant/20">
+                                <div class="text-label-md text-primary font-bold uppercase mb-2">Sanciones</div>
+                                <div class="text-body-md text-on-surface-variant leading-relaxed">
+                                    • Acumulación: 2 Amarillas.<br />
+                                    • Roja directa: 2 fechas.<br />
+                                    • Multa institucional aplicable.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <textarea
+                                class="w-full bg-surface-container border border-outline-variant rounded-lg text-on-surface px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-body-md"
+                                placeholder="Notas adicionales del reglamento disciplinario..." rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- SideNavBar (Mobile Fallback UI) -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 pb-safe bg-surface-container-highest border-t border-outline-variant shadow-lg z-50">
+        <button
+            class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl py-1 px-3 touch-manipulation scale-95 transition-transform">
+            <span class="material-symbols-outlined">sports_and_outdoors</span>
+            <span class="text-label-md font-label">Disciplinas</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-3 touch-manipulation scale-95 transition-transform active:bg-surface-bright">
+            <span class="material-symbols-outlined">gavel</span>
+            <span class="text-label-md font-label">Reglas</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-3 touch-manipulation scale-95 transition-transform active:bg-surface-bright">
+            <span class="material-symbols-outlined">group</span>
+            <span class="text-label-md font-label">Grupos</span>
+        </button>
+        <button
+            class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-3 touch-manipulation scale-95 transition-transform active:bg-surface-bright">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="text-label-md font-label">Config</span>
+        </button>
+    </nav>
+    <script>
+        // Micro-interactions and UI Logic
+        const rangeInput = document.getElementById('teamRange');
+        const rangeValue = document.getElementById('rangeValue');
+
+        rangeInput.addEventListener('input', (e) => {
+            rangeValue.textContent = e.target.value;
+            // Visual feedback on the number
+            rangeValue.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                rangeValue.style.transform = 'scale(1)';
+            }, 100);
+        });
+
+        // Add hover effects for cards
+        const cards = document.querySelectorAll('.bg-\\[\\#16161A\\]');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+                card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0px)';
+            });
+        });
+
+        // Notification sound simulation / toast placeholder logic
+        const saveBtn = document.querySelector('button.bg-primary');
+        saveBtn.addEventListener('click', () => {
+            saveBtn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>';
+            setTimeout(() => {
+                saveBtn.innerHTML = 'Guardar Cambios';
+                // Trigger hypothetical success notification
+            }, 800);
+        });
+    </script>
+</body>
+
+</html>
